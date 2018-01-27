@@ -1,20 +1,20 @@
 <!DOCTYPE HTML>
-<html lang="en">
+<html lang="{{ language }}">
     <head>
         <meta charset="UTF-8">
-        <title>Techniques - </title>
+        <title>{{ title }}</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <meta name="description" content="">
+        <meta name="description" content="{{ description }}">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
 
-        <base href="../">
+        <base href="{{ path_to_root }}">
 
         <link rel="stylesheet" href="book.css">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
 
-        <link rel="shortcut icon" href="favicon.png">
+        <link rel="shortcut icon" href="{{ favicon }}">
 
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
@@ -24,9 +24,14 @@
         <link rel="stylesheet" href="ayu-highlight.css">
 
         <!-- Custom theme -->
-        
+        {{#each additional_css}}
+        <link rel="stylesheet" href="{{this}}">
+        {{/each}}
 
-        
+        {{#if mathjax_support}}
+        <!-- MathJax -->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        {{/if}}
 
         <!-- Fetch Clipboard.js from CDN but have a local fallback -->
         <script src="https://cdn.jsdelivr.net/clipboard.js/1.6.1/clipboard.min.js"></script>
@@ -74,13 +79,13 @@
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <ol class="chapter"><li class="affix"><a href="introduction.html">Introduction</a></li><li><a href="techniques/index.html" class="active"><strong aria-hidden="true">1.</strong> Techniques</a></li><li><ol class="section"><li><a href="techniques/dream-recall/index.html"><strong aria-hidden="true">1.1.</strong> Dream Recall</a></li><li><ol class="section"><li><a href="techniques/dream-recall/dream-journals.html"><strong aria-hidden="true">1.1.1.</strong> Dream Journals</a></li></ol></li><li><a href="techniques/lucidity/index.html"><strong aria-hidden="true">1.2.</strong> Lucidity</a></li><li><ol class="section"><li><a href="techniques/lucidity/what-is-lucid-dreaming.html"><strong aria-hidden="true">1.2.1.</strong> What is Lucid Dreaming</a></li><li><a href="techniques/lucidity/dream-initiated/index.html"><strong aria-hidden="true">1.2.2.</strong> Dream Initiated</a></li><li><ol class="section"><li><a href="techniques/lucidity/dream-initiated/reality-checks.html"><strong aria-hidden="true">1.2.2.1.</strong> Reality Checks</a></li><li><a href="techniques/lucidity/dream-initiated/mild.html"><strong aria-hidden="true">1.2.2.2.</strong> MILD</a></li><li><a href="techniques/lucidity/dream-initiated/barriers.html"><strong aria-hidden="true">1.2.2.3.</strong> Barriers</a></li></ol></li><li><a href="techniques/lucidity/wake-initiated/index.html"><strong aria-hidden="true">1.2.3.</strong> Wake Initiated</a></li><li><ol class="section"><li><a href="techniques/lucidity/wake-initiated/dissociation.html"><strong aria-hidden="true">1.2.3.1.</strong> Dissociation</a></li></ol></li><li><a href="techniques/lucidity/wake-up-back-to-bed.html"><strong aria-hidden="true">1.2.4.</strong> What is Lucid Dreaming</a></li></ol></li></ol></li><li><a href="practice-guides/index.html"><strong aria-hidden="true">2.</strong> Practice Guides</a></li><li><ol class="section"><li><a href="practice-guides/lucid-dreaming-basics.html"><strong aria-hidden="true">2.1.</strong> Lucid Dreaming Basics</a></li></ol></li></ol>
+            {{#toc}}{{/toc}}
         </nav>
 
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                
+                {{> header}}
                 <div id="menu-bar" class="menu-bar">
                     <div id="menu-bar-sticky-container">
                         <div class="left-buttons">
@@ -99,7 +104,7 @@
                             </ul>
                         </div>
 
-                        <h1 class="menu-title"></h1>
+                        <h1 class="menu-title">{{ book_title }}</h1>
 
                         <div class="right-buttons">
                             <a href="print.html" title="Print this book">
@@ -120,25 +125,22 @@
 
                 <div id="content" class="content">
                     <main>
-                        <a class="header" href="techniques/index.html#techniques" id="techniques"><h1>Techniques</h1></a>
-<p>This is a collection of guides for various techniques for inducing and improving
-lucid dreams.</p>
-
+                        {{{ content }}}
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                        
-                            <a rel="prev" href="introduction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-keyshortcuts="Left">
+                        {{#previous}}
+                            <a rel="prev" href="{{link}}" class="mobile-nav-chapters previous" title="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
-                        
+                        {{/previous}}
 
-                        
-                            <a rel="next" href="techniques/dream-recall/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-keyshortcuts="Right">
+                        {{#next}}
+                            <a rel="next" href="{{link}}" class="mobile-nav-chapters next" title="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
-                        
+                        {{/next}}
 
                         <div style="clear: both"></div>
                     </nav>
@@ -146,17 +148,17 @@ lucid dreams.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                
-                    <a href="introduction.html" class="nav-chapters previous" title="Previous chapter" aria-keyshortcuts="Left">
+                {{#previous}}
+                    <a href="{{link}}" class="nav-chapters previous" title="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
-                
+                {{/previous}}
 
-                
-                    <a href="techniques/dream-recall/index.html" class="nav-chapters next" title="Next chapter" aria-keyshortcuts="Right">
+                {{#next}}
+                    <a href="{{link}}" class="nav-chapters next" title="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
-                
+                {{/next}}
             </nav>
 
         </div>
@@ -173,19 +175,65 @@ lucid dreams.</p>
             }
         </script>
 
-        
+        {{#if livereload}}
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("{{{livereload}}}");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload(true); // force reload from server (not from cache)
+                }
+            };
 
-        
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+        {{/if}}
 
-        
+        {{#if google_analytics}}
+        <!-- Google Analytics Tag -->
+        <script>
+            var localAddrs = ["localhost", "127.0.0.1", ""];
 
-        
+            // make sure we don't activate google analytics if the developer is
+            // inspecting the book locally...
+            if (localAddrs.indexOf(document.location.hostname) === -1) {
+                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+                ga('create', '{{google_analytics}}', 'auto');
+                ga('send', 'pageview');
+            }
+        </script>
+        {{/if}}
+
+        {{#if playpens_editable}}
+        <script src="{{ ace_js }}" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ editor_js }}" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ mode_rust_js }}" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ theme_dawn_js }}" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ theme_tomorrow_night_js }}" type="text/javascript" charset="utf-8"></script>
+        {{/if}}
+
+        {{#if is_print}}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                window.print();
+            })
+        </script>
+        {{/if}}
 
         <script src="highlight.js"></script>
         <script src="book.js"></script>
 
         <!-- Custom JS script -->
-        
+        {{#each additional_js}}
+        <script type="text/javascript" src="{{this}}"></script>
+        {{/each}}
 
     </body>
 </html>

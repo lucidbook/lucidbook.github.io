@@ -1,0 +1,221 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Dissociation - </title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <base href="../../../">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme -->
+        
+
+        
+
+        <!-- Fetch Clipboard.js from CDN but have a local fallback -->
+        <script src="https://cdn.jsdelivr.net/clipboard.js/1.6.1/clipboard.min.js"></script>
+        <script>
+            if (typeof Clipboard == 'undefined') {
+                document.write(unescape("%3Cscript src='clipboard.min.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+    </head>
+    <body class="light">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme;
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            document.querySelector('html').classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li class="affix"><a href="introduction.html">Introduction</a></li><li><a href="techniques/index.html"><strong aria-hidden="true">1.</strong> Techniques</a></li><li><ol class="section"><li><a href="techniques/dream-recall/index.html"><strong aria-hidden="true">1.1.</strong> Dream Recall</a></li><li><ol class="section"><li><a href="techniques/dream-recall/dream-journals.html"><strong aria-hidden="true">1.1.1.</strong> Dream Journals</a></li></ol></li><li><a href="techniques/lucidity/index.html"><strong aria-hidden="true">1.2.</strong> Lucidity</a></li><li><ol class="section"><li><a href="techniques/lucidity/what-is-lucid-dreaming.html"><strong aria-hidden="true">1.2.1.</strong> What is Lucid Dreaming</a></li><li><a href="techniques/lucidity/dream-initiated/index.html"><strong aria-hidden="true">1.2.2.</strong> Dream Initiated</a></li><li><ol class="section"><li><a href="techniques/lucidity/dream-initiated/reality-checks.html"><strong aria-hidden="true">1.2.2.1.</strong> Reality Checks</a></li><li><a href="techniques/lucidity/dream-initiated/mild.html"><strong aria-hidden="true">1.2.2.2.</strong> MILD</a></li><li><a href="techniques/lucidity/dream-initiated/barriers.html"><strong aria-hidden="true">1.2.2.3.</strong> Barriers</a></li></ol></li><li><a href="techniques/lucidity/wake-initiated/index.html"><strong aria-hidden="true">1.2.3.</strong> Wake Initiated</a></li><li><ol class="section"><li><a href="techniques/lucidity/wake-initiated/dissociation.html" class="active"><strong aria-hidden="true">1.2.3.1.</strong> Dissociation</a></li></ol></li><li><a href="techniques/lucidity/wake-up-back-to-bed.html"><strong aria-hidden="true">1.2.4.</strong> What is Lucid Dreaming</a></li></ol></li></ol></li><li><a href="practice-guides/index.html"><strong aria-hidden="true">2.</strong> Practice Guides</a></li><li><ol class="section"><li><a href="practice-guides/lucid-dreaming-basics.html"><strong aria-hidden="true">2.1.</strong> Lucid Dreaming Basics</a></li></ol></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="submenu">
+                                <li><button class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li><button class="theme" id="rust">Rust</button></li>
+                                <li><button class="theme" id="coal">Coal</button></li>
+                                <li><button class="theme" id="navy">Navy</button></li>
+                                <li><button class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                        </div>
+
+                        <h1 class="menu-title"></h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="techniques/lucidity/wake-initiated/dissociation.html#dissociation" id="dissociation"><h1>Dissociation</h1></a>
+<p>Dissociation is the practice of &quot;letting go&quot; of your physical body, thoughts &amp; other senses.
+Doing so can result in much more relaxed and focused meditation, much better visualization, along with easier dream induction via WILD or similar means.</p>
+<p>You can dissociate pretty much any time you'd like, provided you are in a comfortable position and with minimal or no outside disturbances (Auditory, etc...), it is preferable to keep your eyes closed while dissociating.</p>
+<p>For all of these methods, start by going into a comfortable position (If you're unsure, just do the corpse position, lie on your back, arms lying down on the sides, no crossing of the legs).
+Then close your eyes and begin some meditation at first, simply focus on your breathing for a few minutes.</p>
+<a class="header" href="techniques/lucidity/wake-initiated/dissociation.html#dissociating-the-physical-body-via-ignoring-it" id="dissociating-the-physical-body-via-ignoring-it"><h2>Dissociating the physical body via ignoring it</h2></a>
+<p>When you feel relaxed, begin to slowly ignore your body in an incremental manner, first your toes, then feet, legs, hands, arms, chest, torso and finally head.
+If you keep focus on your breathing at all times, you'll find that it becomes much easier to dissociate.</p>
+<p>If on purpose ignoring a certain part of your body doesn't make sense, that's alright.
+Not everyone can do that easily.
+Try one of the following two alternatives instead.</p>
+<a class="header" href="techniques/lucidity/wake-initiated/dissociation.html#dissociating-the-physical-body-via-amplifying-and-ignoring-it" id="dissociating-the-physical-body-via-amplifying-and-ignoring-it"><h3>Dissociating the physical body via amplifying and ignoring it</h3></a>
+<p>If dissociating through simply ignoring your body doesn't quite do the trick or takes a long time, you can try this method instead which may provide better results.</p>
+<p>When you feel relaxed, begin to focus on your body (Stay aware of your breathing nonetheless) and &quot;amplify&quot; the feeling of your body, feel absolutely everything of your body, do that for a few minutes.
+Then just suddenly ignore your body, shift your focus to solely your breathing only and dissociation will carry out very fast.</p>
+<a class="header" href="techniques/lucidity/wake-initiated/dissociation.html#dissociating-the-physical-body-via-amplifying-and-creating-a-new-body" id="dissociating-the-physical-body-via-amplifying-and-creating-a-new-body"><h3>Dissociating the physical body via amplifying and creating a new body</h3></a>
+<p>When you feel relaxed, begin to focus on your body (Stay aware of your breathing nonetheless) and &quot;amplify&quot; the feeling of your body, feel absolutely everything of your body, do that for a few minutes.
+Then pretend that this body is in fact your new body, a body that is different from the real physical one and continue amplifying it as long as you wish, the more you do it, the more dissociation.</p>
+<p>The most straightforward way to create the feeling of that body being different is to, well, feel it.
+Convince yourself that this new body you're in isn't the one you had just a few minutes ago.
+For possibly more effective dissociation, create the illusion that your new body has more features (e.g different body shape, wings, etc...)</p>
+<a class="header" href="techniques/lucidity/wake-initiated/dissociation.html#dissociating-your-thoughts-andor-emotions" id="dissociating-your-thoughts-andor-emotions"><h2>Dissociating your thoughts and/or emotions</h2></a>
+<p>Dissociation from your thoughts is rather easy, this is just simple meditation in the end. Focus on your breathing, keep track whenever your breathe in or out.
+You cannot block thoughts or emotions, but doing so will put them in the background, you acknowledge them, but you let them pass, you don't get stuck on a specific thought.</p>
+<a class="header" href="techniques/lucidity/wake-initiated/dissociation.html#dissociating-from-vision" id="dissociating-from-vision"><h2>Dissociating from vision</h2></a>
+<p>Done in conjunction of physical body dissociation, this is possibly the most powerful form of dissociation, it will very quickly lead to very vivid hypnagogia and possibly dreams.</p>
+<p>This is going to sound quite weird, but in a nutshell what you want to do is to &quot;visualize visualization&quot; and you want to keep going down this path as much as you can. So in the end you may &quot;visualize visualizing visualization&quot; and so on...
+Don't worry too much about what this means or the details, just try to do whatever feels right.</p>
+<a class="header" href="techniques/lucidity/wake-initiated/dissociation.html#extra-tips" id="extra-tips"><h2>Extra tips</h2></a>
+<p>What you can do for extra focus &amp; relaxedness, you can perform the 4-7-8 breathing technique which is explained by this awesome man!</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/gz4G31LGyog" frameborder="0" allowfullscreen></iframe>
+<p>It helps you focus, it helps you relax, it helps you sleep faster, it relieves anxiety and you can get quite euphoric from it.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="techniques/lucidity/wake-initiated/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="techniques/lucidity/wake-up-back-to-bed.html" class="mobile-nav-chapters next" title="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="techniques/lucidity/wake-initiated/index.html" class="nav-chapters previous" title="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="techniques/lucidity/wake-up-back-to-bed.html" class="nav-chapters next" title="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if (getComputedStyle(document.querySelector(".fa")).fontFamily !== "FontAwesome") {
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.type = 'text/css';
+                link.href = '_FontAwesome/css/font-awesome.css';
+                document.head.insertBefore(link, document.head.firstChild)
+            }
+        </script>
+
+        
+
+        
+
+        
+
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS script -->
+        
+
+    </body>
+</html>

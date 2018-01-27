@@ -1,0 +1,259 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>MILD - </title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <base href="../../../">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme -->
+        
+
+        
+
+        <!-- Fetch Clipboard.js from CDN but have a local fallback -->
+        <script src="https://cdn.jsdelivr.net/clipboard.js/1.6.1/clipboard.min.js"></script>
+        <script>
+            if (typeof Clipboard == 'undefined') {
+                document.write(unescape("%3Cscript src='clipboard.min.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+    </head>
+    <body class="light">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme;
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            document.querySelector('html').classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li class="affix"><a href="introduction.html">Introduction</a></li><li><a href="techniques/index.html"><strong aria-hidden="true">1.</strong> Techniques</a></li><li><ol class="section"><li><a href="techniques/dream-recall/index.html"><strong aria-hidden="true">1.1.</strong> Dream Recall</a></li><li><ol class="section"><li><a href="techniques/dream-recall/dream-journals.html"><strong aria-hidden="true">1.1.1.</strong> Dream Journals</a></li></ol></li><li><a href="techniques/lucidity/index.html"><strong aria-hidden="true">1.2.</strong> Lucidity</a></li><li><ol class="section"><li><a href="techniques/lucidity/what-is-lucid-dreaming.html"><strong aria-hidden="true">1.2.1.</strong> What is Lucid Dreaming</a></li><li><a href="techniques/lucidity/dream-initiated/index.html"><strong aria-hidden="true">1.2.2.</strong> Dream Initiated</a></li><li><ol class="section"><li><a href="techniques/lucidity/dream-initiated/reality-checks.html"><strong aria-hidden="true">1.2.2.1.</strong> Reality Checks</a></li><li><a href="techniques/lucidity/dream-initiated/mild.html" class="active"><strong aria-hidden="true">1.2.2.2.</strong> MILD</a></li><li><a href="techniques/lucidity/dream-initiated/barriers.html"><strong aria-hidden="true">1.2.2.3.</strong> Barriers</a></li></ol></li><li><a href="techniques/lucidity/wake-initiated/index.html"><strong aria-hidden="true">1.2.3.</strong> Wake Initiated</a></li><li><ol class="section"><li><a href="techniques/lucidity/wake-initiated/dissociation.html"><strong aria-hidden="true">1.2.3.1.</strong> Dissociation</a></li></ol></li><li><a href="techniques/lucidity/wake-up-back-to-bed.html"><strong aria-hidden="true">1.2.4.</strong> What is Lucid Dreaming</a></li></ol></li></ol></li><li><a href="practice-guides/index.html"><strong aria-hidden="true">2.</strong> Practice Guides</a></li><li><ol class="section"><li><a href="practice-guides/lucid-dreaming-basics.html"><strong aria-hidden="true">2.1.</strong> Lucid Dreaming Basics</a></li></ol></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="submenu">
+                                <li><button class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li><button class="theme" id="rust">Rust</button></li>
+                                <li><button class="theme" id="coal">Coal</button></li>
+                                <li><button class="theme" id="navy">Navy</button></li>
+                                <li><button class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                        </div>
+
+                        <h1 class="menu-title"></h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="techniques/lucidity/dream-initiated/mild.html#mild---mnemonically-induced-lucid-dream" id="mild---mnemonically-induced-lucid-dream"><h1>MILD - Mnemonically Induced Lucid Dream</h1></a>
+<p>The MILD technique is very beginner-friendly, and has been very effective
+overall, regardless of experience.</p>
+<p>MILD works by teaching your mind what should be happening in a dream, and
+affirming to yourself that you <em>will</em> lucid dream.
+This way you're training your mind to lucid dream without actually having to
+be in a lucid dream yet to do it.</p>
+<p>With this technique it's important to do it <em>every day</em>.
+Persistence and consistency are the key to successful MILD.
+If you wake up in the morning after having done MILD and haven't gotten a lucid
+dream, it just means you've worked further towards one.
+Every night trains your mind a bit more and eventually you'll start to see
+results.</p>
+<a class="header" href="techniques/lucidity/dream-initiated/mild.html#so-how-does-it-work" id="so-how-does-it-work"><h2>So how does it work?</h2></a>
+<p>Every evening, put some time apart right before sleep to do MILD.
+You need at least 5 minutes, but for better results do roughly 10 to 20 minutes.
+Before you start, put your worries and thoughts about the next day away and
+clear your mind.
+Perhaps write them in your dream journal if you're worried about forgetting
+something.
+You're about to get some sleep, so you can't really do much with those worries
+anyways, set them to the side and relax.</p>
+<p>If you fall asleep easily (within 10 minutes), you should start MILD sitting
+comfortably on your bed for roughly 5 minutes before laying down.
+You should be keeping your focus on MILD for at least 5 minutes, so if you fall
+asleep easily, laying down will make this harder for you.
+If you're not someone who falls asleep within 10 minutes, just lay down from the
+start.
+After those 5 minutes are over you should continue, but make less of an effort
+to keep focus.
+At that point you should start falling asleep and trying to keep your focus on
+it will keep you awake.</p>
+<p>So, as you sit or lay down, start thinking about lucid dreaming.
+Imagine your last dream in as much detail as possible.
+Imagine becoming and staying lucid.
+Imagine exploring the dream, and what you would do when lucid.
+Imagine completing the goals you have for lucid dreaming.
+Believe that in a few minutes, this is exactly what will happen to you.
+Mix it up a bit what you're imagining every night, use different dreams, or
+entirely invent a dream of your own.</p>
+<p>When the 5 minutes are over, try to continue, but let your mind drift.
+At this point you're trying to fall asleep.
+By the time you fall asleep you'll have ingrained the idea of lucid dreaming
+further into your mind.
+If you're someone who wakes up naturally during the night, or because of an
+alarm for another technique, you can also do MILD the next time you fall asleep.
+It will help, but all you need to keep improving is doing it once every night.</p>
+<a class="header" href="techniques/lucidity/dream-initiated/mild.html#mantra" id="mantra"><h2>Mantra</h2></a>
+<p>You can also boost your MILD successfulness by adding a mantra to it, or after
+it when you're trying to fall asleep.
+A mantra is simply something you repeat to yourself in your mind.
+Some good mantras are...</p>
+<ul>
+<li>I'm dreaming</li>
+<li>This is dream</li>
+<li>I will wake up in a dream</li>
+<li>I'll be dreaming soon</li>
+<li>I will have lucid dreams tonight</li>
+</ul>
+<p>A thing to keep in mind with mantras is that the mind ignores negation in
+mantras. Avoid words like &quot;not&quot;. &quot;I will <em>not</em> fail to have a lucid dream&quot; will
+become &quot;I will fail to have a lucid dream&quot; to your mind.</p>
+<a class="header" href="techniques/lucidity/dream-initiated/mild.html#combining-with-other-techniques" id="combining-with-other-techniques"><h2>Combining With Other Techniques</h2></a>
+<p>MILD by itself is very effective, but it also benefits from combining it with
+other techniques.
+All-Day-Awareness, Reality Checking, and Wakeup-Back-To-Bed all give you an
+added bonus in effectiveness and can be easily combined with MILD.</p>
+<a class="header" href="techniques/lucidity/dream-initiated/mild.html#references" id="references"><h2>References</h2></a>
+<ul>
+<li><a href="http://www.dreamviews.com/attaining-lucidity/119050-naiyas-simple-mild-technique.html">Naiya's Simple MILD Technique Guide</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="techniques/lucidity/dream-initiated/reality-checks.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="techniques/lucidity/dream-initiated/barriers.html" class="mobile-nav-chapters next" title="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="techniques/lucidity/dream-initiated/reality-checks.html" class="nav-chapters previous" title="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="techniques/lucidity/dream-initiated/barriers.html" class="nav-chapters next" title="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if (getComputedStyle(document.querySelector(".fa")).fontFamily !== "FontAwesome") {
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.type = 'text/css';
+                link.href = '_FontAwesome/css/font-awesome.css';
+                document.head.insertBefore(link, document.head.firstChild)
+            }
+        </script>
+
+        
+
+        
+
+        
+
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS script -->
+        
+
+    </body>
+</html>

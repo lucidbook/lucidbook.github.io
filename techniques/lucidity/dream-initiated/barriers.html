@@ -1,0 +1,231 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Barriers - </title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <base href="../../../">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme -->
+        
+
+        
+
+        <!-- Fetch Clipboard.js from CDN but have a local fallback -->
+        <script src="https://cdn.jsdelivr.net/clipboard.js/1.6.1/clipboard.min.js"></script>
+        <script>
+            if (typeof Clipboard == 'undefined') {
+                document.write(unescape("%3Cscript src='clipboard.min.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+    </head>
+    <body class="light">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme;
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            document.querySelector('html').classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li class="affix"><a href="introduction.html">Introduction</a></li><li><a href="techniques/index.html"><strong aria-hidden="true">1.</strong> Techniques</a></li><li><ol class="section"><li><a href="techniques/dream-recall/index.html"><strong aria-hidden="true">1.1.</strong> Dream Recall</a></li><li><ol class="section"><li><a href="techniques/dream-recall/dream-journals.html"><strong aria-hidden="true">1.1.1.</strong> Dream Journals</a></li></ol></li><li><a href="techniques/lucidity/index.html"><strong aria-hidden="true">1.2.</strong> Lucidity</a></li><li><ol class="section"><li><a href="techniques/lucidity/what-is-lucid-dreaming.html"><strong aria-hidden="true">1.2.1.</strong> What is Lucid Dreaming</a></li><li><a href="techniques/lucidity/dream-initiated/index.html"><strong aria-hidden="true">1.2.2.</strong> Dream Initiated</a></li><li><ol class="section"><li><a href="techniques/lucidity/dream-initiated/reality-checks.html"><strong aria-hidden="true">1.2.2.1.</strong> Reality Checks</a></li><li><a href="techniques/lucidity/dream-initiated/mild.html"><strong aria-hidden="true">1.2.2.2.</strong> MILD</a></li><li><a href="techniques/lucidity/dream-initiated/barriers.html" class="active"><strong aria-hidden="true">1.2.2.3.</strong> Barriers</a></li></ol></li><li><a href="techniques/lucidity/wake-initiated/index.html"><strong aria-hidden="true">1.2.3.</strong> Wake Initiated</a></li><li><ol class="section"><li><a href="techniques/lucidity/wake-initiated/dissociation.html"><strong aria-hidden="true">1.2.3.1.</strong> Dissociation</a></li></ol></li><li><a href="techniques/lucidity/wake-up-back-to-bed.html"><strong aria-hidden="true">1.2.4.</strong> What is Lucid Dreaming</a></li></ol></li></ol></li><li><a href="practice-guides/index.html"><strong aria-hidden="true">2.</strong> Practice Guides</a></li><li><ol class="section"><li><a href="practice-guides/lucid-dreaming-basics.html"><strong aria-hidden="true">2.1.</strong> Lucid Dreaming Basics</a></li></ol></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="submenu">
+                                <li><button class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li><button class="theme" id="rust">Rust</button></li>
+                                <li><button class="theme" id="coal">Coal</button></li>
+                                <li><button class="theme" id="navy">Navy</button></li>
+                                <li><button class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                        </div>
+
+                        <h1 class="menu-title"></h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="techniques/lucidity/dream-initiated/barriers.html#barriers" id="barriers"><h1>Barriers</h1></a>
+<p>Barriers is a technique to induce lucid dreams by creating barriers you can only
+pass through if you're lucid.
+This can be any kind of barrier, the technique works by preventing you from
+moving forward until you're lucid, and by triggering lucidity simply with the
+existence of the barrier.
+Eventually, because of the barriers, you'll do a reality check, feel or notice
+that something is wrong, or perhaps even notice the barriers themselves.</p>
+<a class="header" href="techniques/lucidity/dream-initiated/barriers.html#setting-up-a-barrier" id="setting-up-a-barrier"><h2>Setting up a barrier</h2></a>
+<p>The barriers technique has to be done from inside a lucid dream.
+If you are not capable of lucid dreaming yet, take a look at other techniques
+that don't need to be done from inside a dream.</p>
+<p>Once you are in a lucid dream, you're going to want to go (Preferably) to your
+bedroom, or to any place of your choice where you'd like to setup a <strong>spawning point</strong>.</p>
+<a class="header" href="techniques/lucidity/dream-initiated/barriers.html#a-spawning-point-wha" id="a-spawning-point-wha"><h3>A spawning point? Wha?</h3></a>
+<p>Yes, either your bed or a place of your choice, when setting up the barriers, you will spawn there every dream, it will make sense as you continue reading the guide.</p>
+<p>Now that you have chosen the place where you'd like to spawn, you need to demark the spawning zone in some way, and in this example we're gonna use &quot;magical auras&quot; to demark the spawning zone.</p>
+<p>Wave your hands around as if you were going to do some magic, like energy manipulation, focus this energy and send it towards your spawn point as it slowly marks the contours of the spawn zone you wish. You should start to see a magical aura go out from your hand, and it will slowly trace the contours of your spawn point.</p>
+<p>At the same time this happens, set up the following rules, either by thinking them, saying them out loud, or maybe even chanting it:</p>
+<ul>
+<li>&quot;From now on, I will spawn in (Your place of choosing) in every single one of my future dreams.&quot;</li>
+<li>&quot;I cannot go through the barriers, so long as I am not lucid.&quot;</li>
+<li>&quot;If I am out of the barriers, I am already lucid.&quot;</li>
+</ul>
+<p>That is about it, that's the general idea on how you should proceed for it, but of course you can get creative and use something else instead of &quot;magical auras&quot; or perhaps even differently worded rules.</p>
+<p>And now your barriers are done! Congrats! But you're still not quite there just yet...</p>
+<a class="header" href="techniques/lucidity/dream-initiated/barriers.html#persisting-the-barriers" id="persisting-the-barriers"><h2>Persisting the barriers</h2></a>
+<p>Now that you have setup your barriers, you'll need to make them persistent, so that it actually carries out to your future dreams.</p>
+<p>Doing so is fairly simple and may take anywhere from a day to a few days.</p>
+<p>You'll need to meditate and visualize those barriers you've just made. Visualize possible scenarios about it might play out in your next dream.</p>
+<a class="header" href="techniques/lucidity/dream-initiated/barriers.html#heres-an-example" id="heres-an-example"><h3>Here's an example</h3></a>
+<p>Start your meditation, when you feel like it, start visualizing the beginning of a dream, you'll start at your spawn zone, still not lucid and unaware that this is a dream.
+However because of the rules you've just set, you'll be stuck in this spawn zone, so you might try to get out or wonder why you cannot get out, <em>and that's the thing, that is the trigger for lucidity</em>.</p>
+<p>You will extremely likely start to ask yourself legitimate questions about why this is happening, may it be a dream? You will reality check at this point or just know you're dreaming. Tada!</p>
+<p>Now you are able to go through the barriers and get out of the spawn point because you are lucid now!</p>
+<a class="header" href="techniques/lucidity/dream-initiated/barriers.html#after-a-day-or-a-few-days-of-meditation-and-visualization" id="after-a-day-or-a-few-days-of-meditation-and-visualization"><h3>After a day or a few days of meditation and visualization...</h3></a>
+<p>That's it! The barriers have now carried over to your future dreams, and now you will be getting lucid every dream! You'll spawn at your spawn point, you will be stuck in this spawn point as the barriers do not let you through. You'll wonder why this happens and suspect this is a dream, thus doing a reality check, and becoming lucid!</p>
+<a class="header" href="techniques/lucidity/dream-initiated/barriers.html#maintaining-the-barriers" id="maintaining-the-barriers"><h2>Maintaining the barriers</h2></a>
+<p>Alright, it isn't <em>that</em> easy, you still have to maintain your barriers from time to time because they will slowly fade out eventually, leaving you with normal dreams again.</p>
+<p>Once a week, simply go back to your spawn point and restrengthen your barriers by giving it some more energy, you can give some of your energy just like in the barrier induction part, or you can do something else that makes sense to you, get creative!</p>
+<a class="header" href="techniques/lucidity/dream-initiated/barriers.html#help-my-barriers-are-fading--not-as-effective" id="help-my-barriers-are-fading--not-as-effective"><h3>Help! My barriers are fading / not as effective</h3></a>
+<p>If your barriers start to fade, depending on the severity, you can meditate and visualize it to restrengthen it a little bit, go into a lucid dream, and restrenghten it from there.
+Or if it's too severe then I'm afraid you'll have to go back to <a href="techniques/lucidity/dream-initiated/barriers.html#setting-up-a-barrier">setting up a barrier</a>, pay attention next time!</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="techniques/lucidity/dream-initiated/mild.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="techniques/lucidity/wake-initiated/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="techniques/lucidity/dream-initiated/mild.html" class="nav-chapters previous" title="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="techniques/lucidity/wake-initiated/index.html" class="nav-chapters next" title="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if (getComputedStyle(document.querySelector(".fa")).fontFamily !== "FontAwesome") {
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.type = 'text/css';
+                link.href = '_FontAwesome/css/font-awesome.css';
+                document.head.insertBefore(link, document.head.firstChild)
+            }
+        </script>
+
+        
+
+        
+
+        
+
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS script -->
+        
+
+    </body>
+</html>

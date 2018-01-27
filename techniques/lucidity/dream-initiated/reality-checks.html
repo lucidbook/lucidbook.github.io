@@ -1,0 +1,305 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Reality Checks - </title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <base href="../../../">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme -->
+        
+
+        
+
+        <!-- Fetch Clipboard.js from CDN but have a local fallback -->
+        <script src="https://cdn.jsdelivr.net/clipboard.js/1.6.1/clipboard.min.js"></script>
+        <script>
+            if (typeof Clipboard == 'undefined') {
+                document.write(unescape("%3Cscript src='clipboard.min.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+    </head>
+    <body class="light">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme;
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            document.querySelector('html').classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li class="affix"><a href="introduction.html">Introduction</a></li><li><a href="techniques/index.html"><strong aria-hidden="true">1.</strong> Techniques</a></li><li><ol class="section"><li><a href="techniques/dream-recall/index.html"><strong aria-hidden="true">1.1.</strong> Dream Recall</a></li><li><ol class="section"><li><a href="techniques/dream-recall/dream-journals.html"><strong aria-hidden="true">1.1.1.</strong> Dream Journals</a></li></ol></li><li><a href="techniques/lucidity/index.html"><strong aria-hidden="true">1.2.</strong> Lucidity</a></li><li><ol class="section"><li><a href="techniques/lucidity/what-is-lucid-dreaming.html"><strong aria-hidden="true">1.2.1.</strong> What is Lucid Dreaming</a></li><li><a href="techniques/lucidity/dream-initiated/index.html"><strong aria-hidden="true">1.2.2.</strong> Dream Initiated</a></li><li><ol class="section"><li><a href="techniques/lucidity/dream-initiated/reality-checks.html" class="active"><strong aria-hidden="true">1.2.2.1.</strong> Reality Checks</a></li><li><a href="techniques/lucidity/dream-initiated/mild.html"><strong aria-hidden="true">1.2.2.2.</strong> MILD</a></li><li><a href="techniques/lucidity/dream-initiated/barriers.html"><strong aria-hidden="true">1.2.2.3.</strong> Barriers</a></li></ol></li><li><a href="techniques/lucidity/wake-initiated/index.html"><strong aria-hidden="true">1.2.3.</strong> Wake Initiated</a></li><li><ol class="section"><li><a href="techniques/lucidity/wake-initiated/dissociation.html"><strong aria-hidden="true">1.2.3.1.</strong> Dissociation</a></li></ol></li><li><a href="techniques/lucidity/wake-up-back-to-bed.html"><strong aria-hidden="true">1.2.4.</strong> What is Lucid Dreaming</a></li></ol></li></ol></li><li><a href="practice-guides/index.html"><strong aria-hidden="true">2.</strong> Practice Guides</a></li><li><ol class="section"><li><a href="practice-guides/lucid-dreaming-basics.html"><strong aria-hidden="true">2.1.</strong> Lucid Dreaming Basics</a></li></ol></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="submenu">
+                                <li><button class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li><button class="theme" id="rust">Rust</button></li>
+                                <li><button class="theme" id="coal">Coal</button></li>
+                                <li><button class="theme" id="navy">Navy</button></li>
+                                <li><button class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                        </div>
+
+                        <h1 class="menu-title"></h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="techniques/lucidity/dream-initiated/reality-checks.html#reality-checks" id="reality-checks"><h1>Reality Checks</h1></a>
+<p>So, how do you know you're in a dream?
+Easy, you check if you are!</p>
+<p>Reality checks are the bread and butter of lucid dreaming.
+The concept is simple, when you're not sure if you're dreaming or not, you
+check!
+You might have however seen a problem with this, you don't just naturally tend
+to ask yourself if you're dreaming while in a dream.
+We'll get back to this in a bit but first...</p>
+<a class="header" href="techniques/lucidity/dream-initiated/reality-checks.html#so-how-exactly-do-i-do-a-reality-check" id="so-how-exactly-do-i-do-a-reality-check"><h2>So how exactly do I do a reality check?</h2></a>
+<p>A reality check is really simple.
+It's just a few steps.</p>
+<ul>
+<li>Ask yourself &quot;Am I dreaming?&quot;.
+Don't ask it for the sake of it.
+You should <strong>really</strong> be doubting your reality.
+Even if you did a check just before, you always might be in a dream.</li>
+<li>Look around you, does anything look weird. If so, inspect it.</li>
+<li>Ask yourself &quot;How did I get here&quot;, what did you do 5 minutes ago, how did you
+get to the location you currently are?
+Time often works differently in dreams, see if you can recognize a time
+skip, or if you can't remember how you got there.</li>
+<li>Perform the reality check itself, here you perform an action that should tell
+you for sure that you're dreaming.
+In this example we're using the classic &quot;Look at your hands&quot; check.
+<ul>
+<li>Look at your palms</li>
+<li>Check if they look as they normally do, how many fingers do you have,
+don't yet assume what the correct amount should be.</li>
+</ul>
+</li>
+<li>Say to yourself &quot;Next time I am dreaming, I will reality check and realize
+I'm dreaming.&quot;.
+This will incubate the idea of doing reality checks in your mind and help
+bring that into your dreams.</li>
+<li>Re-try your reality check a few times and keep saying that to yourself every
+time.</li>
+</ul>
+<p>When you go to sleep, you should also repeat &quot;Next time I am dreaming, I will
+reality check and realize I'm dreaming.&quot; to yourself as you're falling asleep.
+The reality check example given is a classic and simple one, but there's various
+others you can do.</p>
+<ul>
+<li>Keeping your nose plugged/blocked and trying to breathe.</li>
+<li>Trying to push your thumb through your palm.</li>
+<li>Paying attention to gravity, see if it's harder or easier to walk than it
+should be.</li>
+<li>Try to change something in your potential dream.</li>
+<li>Try light switches, they don't always work right in dreams.</li>
+<li>Read some text, see if it's hard to read or doesn't make any sense.
+Look away and back and again and see if it changed.</li>
+</ul>
+<p>In total doing a check shouldn't take you too long and it won't be interrupting
+to your overall day.
+You can do as many checks as you want and combine different ones, be creative!</p>
+<a class="header" href="techniques/lucidity/dream-initiated/reality-checks.html#okay-but-how-do-i-remember-to-do-this-in-dreams" id="okay-but-how-do-i-remember-to-do-this-in-dreams"><h2>Okay, but how do I remember to do this in dreams?</h2></a>
+<p>Well, one thing that will help is the mantra above, repeating to yourself that
+you will be doing a check.
+But there's one important key thing to keep in mind when you start lucid
+dreaming.</p>
+<p><strong>You should never be sure you're not dreaming, always assume you might be no
+matter what.
+A reality check can't prove that you are in reality, it can only prove that
+you're not.</strong></p>
+<p>This is so incredibly key I can't make it bold enough text.
+You should <strong>always</strong> assume you might be dreaming, it is <strong>always</strong> a
+possibility.
+Living with this doubt may sound scary, but it isn't!
+Doubting your surroundings at all times makes you more aware of what's happening
+around you, and doesn't take away from the experiences you have while awake.
+Having this constant doubt about being awake is the first step to realizing that
+you're dreaming in a dream, but again we'll get back to that in a bit.</p>
+<p>Before we move on I should make a quick mention, if you doubting your reality
+starts impacting your life in serious negative ways, you need to take a step
+back and re-evaluate if this is the right path for you.
+Some people suffer from mental disorders that make distinguishing between
+reality and non-reality (hallucinations, dreams, etc.) extremely hard and if you
+feel like you are experiencing that you should stop right then and contact a
+therapist.
+Prioritize your mental wellbeing over lucid dreaming.</p>
+<a class="header" href="techniques/lucidity/dream-initiated/reality-checks.html#right-anything-else-i-can-do-to-remember-this" id="right-anything-else-i-can-do-to-remember-this"><h2>Right, anything else I can do to remember this?</h2></a>
+<p>Sure!
+A few more detailed tricks will be mentioned later in this guide but here's a
+few simple tricks you can make use of.</p>
+<ul>
+<li>Read back your dream journal (we'll get to what that is later), and see if you
+have any recurring dream signs that should help you recognize it's a dream.</li>
+<li>Perform a reality check whenever something common occurs that also happens in
+your dreams.</li>
+<li>Perform a reality check whenever you go through a door.</li>
+</ul>
+<p>Basically, the trick here is to create triggers that will cause you to reality
+check.
+You can also meditate to incubate these triggers into your dreams. (More on
+meditation and incubation later in this guide)</p>
+<a class="header" href="techniques/lucidity/dream-initiated/reality-checks.html#if-i-do-all-of-this-will-i-get-a-lucid-dream" id="if-i-do-all-of-this-will-i-get-a-lucid-dream"><h2>If I do all of this, will I get a lucid dream?</h2></a>
+<p>Yes! Eventually.
+It's going to take time, takes a different amount for everyone.
+Some take a few days, others a few months.
+The key is persistence and staying positive.
+Say to yourself every night before sleeping that you <strong>will</strong> have a lucid
+dream.
+Really believe it, even if you've been going for weeks without success.</p>
+<p>This technique is called &quot;DILD&quot; for Dream-Initiated Lucid Dream.
+Up next in this guide you'll read about another technique called &quot;MILD&quot; that
+will make it easier to become lucid as well.
+Both of these techniques benefit from persistence and time, it will become
+easier over time to become lucid.</p>
+<p>Eventually, you'll get a successes.
+You'll start being more aware in dreams, thinking more critically.
+You start noticing things are weird, but perhaps not quite realizing yet.
+And one day, you'll suddenly be standing there, looking at your hands having 6
+fingers.</p>
+<a class="header" href="techniques/lucidity/dream-initiated/reality-checks.html#further-reading" id="further-reading"><h2>Further Reading</h2></a>
+<p>An extra technique you could make use of to remember your reality checks is
+called &quot;Prospective Memory&quot;, there's no guide on this currently in this book.
+Instead you could read <a href="http://www.dreamviews.com/attaining-lucidity/151321-prospective-memory-lucid-dreaming-4-a.html">this one</a>.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="techniques/lucidity/dream-initiated/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="techniques/lucidity/dream-initiated/mild.html" class="mobile-nav-chapters next" title="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="techniques/lucidity/dream-initiated/index.html" class="nav-chapters previous" title="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="techniques/lucidity/dream-initiated/mild.html" class="nav-chapters next" title="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if (getComputedStyle(document.querySelector(".fa")).fontFamily !== "FontAwesome") {
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.type = 'text/css';
+                link.href = '_FontAwesome/css/font-awesome.css';
+                document.head.insertBefore(link, document.head.firstChild)
+            }
+        </script>
+
+        
+
+        
+
+        
+
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS script -->
+        
+
+    </body>
+</html>

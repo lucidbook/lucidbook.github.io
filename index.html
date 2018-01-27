@@ -2,10 +2,11 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Introduction - LucidBook</title>
+        <title>Introduction - </title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <meta name="description" content="A creative commons guide on lucid dreaming.">
+        <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
 
 
         <link rel="stylesheet" href="book.css">
@@ -34,142 +35,186 @@
             }
         </script>
 
-        <!-- Fetch JQuery from CDN but have a local fallback -->
-        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-        <script>
-            if (typeof jQuery == 'undefined') {
-                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
-            }
-        </script>
-
-        <!-- Fetch store.js from local - TODO add CDN when 2.x.x is available on cdnjs -->
-        <script src="store.js"></script>
-
-        <!-- Custom JS script -->
-        
-
     </head>
     <body class="light">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script type="text/javascript">
-            var theme = store.get('mdbook-theme');
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
             if (theme === null || theme === undefined) { theme = 'light'; }
-            $('body').removeClass().addClass(theme);
+            document.body.className = theme;
+            document.querySelector('html').className = theme;
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script type="text/javascript">
-            var sidebar = store.get('mdbook-sidebar');
-            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
-            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            document.querySelector('html').classList.add("sidebar-" + sidebar);
         </script>
 
-        <div id="sidebar" class="sidebar">
-            <ul class="chapter"><li class="affix"><a href="./introduction.html" class="active">Introduction</a></li><li><a href="./the-basics/index.html"><strong>1.</strong> The Basics</a></li><li><ul class="section"><li><a href="./the-basics/dream-recall.html"><strong>1.1.</strong> Dream Recall</a></li><li><a href="./the-basics/reality-checks.html"><strong>1.2.</strong> Reality Checks</a></li><li><a href="./the-basics/mild.html"><strong>1.3.</strong> MILD</a></li><li><a href="./the-basics/whats-next.html"><strong>1.4.</strong> What's Next</a></li></ul></li><li><a href="./techniques/index.html"><strong>2.</strong> Techniques</a></li><li><ul class="section"><li><a href="./techniques/bild.html"><strong>2.1.</strong> BILD</a></li><li><a href="./techniques/dissociation.html"><strong>2.2.</strong> Dissociation</a></li></ul></li></ul>
-        </div>
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li class="affix"><a href="introduction.html" class="active">Introduction</a></li><li><a href="techniques/index.html"><strong aria-hidden="true">1.</strong> Techniques</a></li><li><ol class="section"><li><a href="techniques/dream-recall/index.html"><strong aria-hidden="true">1.1.</strong> Dream Recall</a></li><li><ol class="section"><li><a href="techniques/dream-recall/dream-journals.html"><strong aria-hidden="true">1.1.1.</strong> Dream Journals</a></li></ol></li><li><a href="techniques/lucidity/index.html"><strong aria-hidden="true">1.2.</strong> Lucidity</a></li><li><ol class="section"><li><a href="techniques/lucidity/what-is-lucid-dreaming.html"><strong aria-hidden="true">1.2.1.</strong> What is Lucid Dreaming</a></li><li><a href="techniques/lucidity/dream-initiated/index.html"><strong aria-hidden="true">1.2.2.</strong> Dream Initiated</a></li><li><ol class="section"><li><a href="techniques/lucidity/dream-initiated/reality-checks.html"><strong aria-hidden="true">1.2.2.1.</strong> Reality Checks</a></li><li><a href="techniques/lucidity/dream-initiated/mild.html"><strong aria-hidden="true">1.2.2.2.</strong> MILD</a></li><li><a href="techniques/lucidity/dream-initiated/barriers.html"><strong aria-hidden="true">1.2.2.3.</strong> Barriers</a></li></ol></li><li><a href="techniques/lucidity/wake-initiated/index.html"><strong aria-hidden="true">1.2.3.</strong> Wake Initiated</a></li><li><ol class="section"><li><a href="techniques/lucidity/wake-initiated/dissociation.html"><strong aria-hidden="true">1.2.3.1.</strong> Dissociation</a></li></ol></li><li><a href="techniques/lucidity/wake-up-back-to-bed.html"><strong aria-hidden="true">1.2.4.</strong> What is Lucid Dreaming</a></li></ol></li></ol></li><li><a href="practice-guides/index.html"><strong aria-hidden="true">2.</strong> Practice Guides</a></li><li><ol class="section"><li><a href="practice-guides/lucid-dreaming-basics.html"><strong aria-hidden="true">2.1.</strong> Lucid Dreaming Basics</a></li></ol></li></ol>
+        </nav>
 
         <div id="page-wrapper" class="page-wrapper">
 
-            <div class="page" tabindex="-1">
+            <div class="page">
+                
                 <div id="menu-bar" class="menu-bar">
-                    <div class="left-buttons">
-                        <i id="sidebar-toggle" class="fa fa-bars"></i>
-                        <i id="theme-toggle" class="fa fa-paint-brush"></i>
-                    </div>
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="submenu">
+                                <li><button class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li><button class="theme" id="rust">Rust</button></li>
+                                <li><button class="theme" id="coal">Coal</button></li>
+                                <li><button class="theme" id="navy">Navy</button></li>
+                                <li><button class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                        </div>
 
-                    <h1 class="menu-title">LucidBook</h1>
+                        <h1 class="menu-title"></h1>
 
-                    <div class="right-buttons">
-                        <a href="print.html">
-                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
-                        </a>
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
 
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
                 <div id="content" class="content">
-                    <a class="header" href="./introduction.html#introduction" id="introduction"><h1>Introduction</h1></a>
-<p>Welcome (potential) lucid dreamer!</p>
+                    <main>
+                        <a class="header" href="introduction.html#introduction" id="introduction"><h1>Introduction</h1></a>
+<p>Welcome (potential) lucid dreamer, meditator, or otherwise!</p>
 <ul>
-<li>If you’re new to lucid dreaming or don’t know what it is, start with the chapter “The Basics”.</li>
-<li>If you want to contribute to this book, see the “Contributing” section below
+<li>If you're interested in lucid dreaming, but don't know what it is or how to do
+it, look at the practice guides chapters. &quot;Lucid Dreaming Basics&quot; is a good
+place to start.</li>
+<li>If you want to contribute to this book, see the &quot;Contributing&quot; section below
 on how to do that.</li>
 </ul>
 <p><em>This book is a heavy work in progress. Feel free to add new guides haphazardly
-if you feel the book needs the subject and doesn’t have it yet, other
+if you feel the book needs the subject and doesn't have it yet, other
 contributors will clean them up and organize them.</em></p>
-<a class="header" href="./introduction.html#what-you-will-find-in-this-book" id="what-you-will-find-in-this-book"><h2>What you will find in this book</h2></a>
+<a class="header" href="introduction.html#what-you-will-find-in-this-book" id="what-you-will-find-in-this-book"><h2>What you will find in this book</h2></a>
 <ul>
-<li>How to lucid dream and how to do various things while lucid dreaming.</li>
+<li>Guides on lucid dreaming and related topics.</li>
 <li>Structured guides on various lucid dreaming techniques.</li>
 </ul>
-<a class="header" href="./introduction.html#what-you-will-not-find-in-this-book" id="what-you-will-not-find-in-this-book"><h2>What you will <em>not</em> find in this book</h2></a>
+<a class="header" href="introduction.html#what-you-will-not-find-in-this-book" id="what-you-will-not-find-in-this-book"><h2>What you will <em>not</em> find in this book</h2></a>
 <ul>
-<li>Paranormal guides or articles.</li>
-<li>Devices, supplements or other paid books.</li>
+<li>A metaphysical focus. Metaphysical articles and guides are allowed but should
+be kept separated from the other articles. Different people have different
+believes, and this book should be open to all believes.</li>
+<li>Devices, supplements or other paid books. No advertising.</li>
 </ul>
-<a class="header" href="./introduction.html#useful-links" id="useful-links"><h2>Useful Links</h2></a>
+<a class="header" href="introduction.html#useful-links" id="useful-links"><h2>Useful Links</h2></a>
 <ul>
 <li><a href="https://www.reddit.com/r/LucidDreaming/">Lucid Dreaming Subreddit</a></li>
 <li><a href="http://ldhub.boards.net/">Lucid Dream Hub</a></li>
 <li><a href="http://www.dreamviews.com/">DreamViews Forum &amp; Guides</a></li>
 </ul>
-<a class="header" href="./introduction.html#contributing" id="contributing"><h2>Contributing</h2></a>
+<a class="header" href="introduction.html#contributing" id="contributing"><h2>Contributing</h2></a>
 <p>You can submit contributions to this book at the <a href="https://github.com/lucidbook/book">GitHub repository</a> for it.
-There’s various ways you can contribute new chapters.</p>
+There's various ways you can contribute new chapters.</p>
 <p>This book is created using <a href="https://github.com/azerupi/mdBook">mdBook</a>, and is
-written in the “Markdown” format.
-If you’re familiar with Reddit’s comment and post formatting you’ll feel right
+written in the &quot;Markdown&quot; format.
+If you're familiar with Reddit's comment and post formatting you'll feel right
 at home.</p>
-<p>Don’t forget to read the style guide in the repository’s README.md before
+<p>Don't forget to read the style guide in the repository's README.md before
 writing.</p>
-<a class="header" href="./introduction.html#submit-an-issue" id="submit-an-issue"><h3>Submit an Issue</h3></a>
-<p>Just create an issue with the title “New Chapter: [Title]”, starting with the
+<a class="header" href="introduction.html#submit-an-issue" id="submit-an-issue"><h3>Submit an Issue</h3></a>
+<p>Just create an issue with the title &quot;New Chapter: [Title]&quot;, starting with the
 chapter you want it to be added to, followed by the text you want in it. A
 contributor will add it for you. This is the easiest but least flexible way to
 contribute.</p>
 <p>The Markdown syntax used on GitHub mostly matches the syntax used by mdBook.</p>
-<a class="header" href="./introduction.html#create-a-pull-request" id="create-a-pull-request"><h3>Create a Pull Request</h3></a>
-<p>Contributions can be done using “Pull Requests”, see the <a href="https://help.github.com/articles/about-pull-requests/">GitHub documentation on pull requests</a>
+<a class="header" href="introduction.html#create-a-pull-request" id="create-a-pull-request"><h3>Create a Pull Request</h3></a>
+<p>Contributions can be done using &quot;Pull Requests&quot;, see the <a href="https://help.github.com/articles/about-pull-requests/">GitHub documentation on pull requests</a>
 on how to contribute.</p>
 <p>You can use the GitHub site for adding and editing files, it has a pretty good
 markdown preview. You can also use your own Git client to download the files and
 edit them on your own computer. (For example, GitKraken, SourceTree, or GitHub
 for Windows)</p>
-<a class="header" href="./introduction.html#license" id="license"><h2>License</h2></a>
+<a class="header" href="introduction.html#license" id="license"><h2>License</h2></a>
 <p><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.</p>
 
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+
+                        
+                            <a rel="next" href="techniques/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
                 </div>
+            </div>
 
-                <!-- Mobile navigation buttons -->
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
 
                 
-                    <a rel="next" href="./the-basics/index.html" class="mobile-nav-chapters next">
+                    <a href="techniques/index.html" class="nav-chapters next" title="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 
-
-            </div>
-
-            
-
-            
-                <a href="./the-basics/index.html" class="nav-chapters next" title="You can navigate through the chapters using the arrow keys">
-                    <i class="fa fa-angle-right"></i>
-                </a>
-            
+            </nav>
 
         </div>
 
 
         <!-- Local fallback for Font Awesome -->
         <script>
-            if ($(".fa").css("font-family") !== "FontAwesome") {
-                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            if (getComputedStyle(document.querySelector(".fa")).fontFamily !== "FontAwesome") {
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.type = 'text/css';
+                link.href = '_FontAwesome/css/font-awesome.css';
+                document.head.insertBefore(link, document.head.firstChild)
             }
         </script>
 
-        <!-- Livereload script (if served using the cli tool) -->
         
 
         
@@ -180,5 +225,9 @@ for Windows)</p>
 
         <script src="highlight.js"></script>
         <script src="book.js"></script>
+
+        <!-- Custom JS script -->
+        
+
     </body>
 </html>

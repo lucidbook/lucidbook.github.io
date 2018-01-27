@@ -2,10 +2,11 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>LucidBook</title>
+        <title></title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <meta name="description" content="A creative commons guide on lucid dreaming.">
+        <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
 
         <base href="">
 
@@ -35,78 +36,113 @@
             }
         </script>
 
-        <!-- Fetch JQuery from CDN but have a local fallback -->
-        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-        <script>
-            if (typeof jQuery == 'undefined') {
-                document.write(unescape("%3Cscript src='jquery.js'%3E%3C/script%3E"));
-            }
-        </script>
-
-        <!-- Fetch store.js from local - TODO add CDN when 2.x.x is available on cdnjs -->
-        <script src="store.js"></script>
-
-        <!-- Custom JS script -->
-        
-
     </head>
     <body class="light">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script type="text/javascript">
-            var theme = store.get('mdbook-theme');
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
             if (theme === null || theme === undefined) { theme = 'light'; }
-            $('body').removeClass().addClass(theme);
+            document.body.className = theme;
+            document.querySelector('html').className = theme;
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script type="text/javascript">
-            var sidebar = store.get('mdbook-sidebar');
-            if (sidebar === "hidden") { $("html").addClass("sidebar-hidden") }
-            else if (sidebar === "visible") { $("html").addClass("sidebar-visible") }
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            document.querySelector('html').classList.add("sidebar-" + sidebar);
         </script>
 
-        <div id="sidebar" class="sidebar">
-            <ul class="chapter"><li class="affix"><a href="./introduction.html">Introduction</a></li><li><a href="./the-basics/index.html"><strong>1.</strong> The Basics</a></li><li><ul class="section"><li><a href="./the-basics/dream-recall.html"><strong>1.1.</strong> Dream Recall</a></li><li><a href="./the-basics/reality-checks.html"><strong>1.2.</strong> Reality Checks</a></li><li><a href="./the-basics/mild.html"><strong>1.3.</strong> MILD</a></li><li><a href="./the-basics/whats-next.html"><strong>1.4.</strong> What's Next</a></li></ul></li><li><a href="./techniques/index.html"><strong>2.</strong> Techniques</a></li><li><ul class="section"><li><a href="./techniques/bild.html"><strong>2.1.</strong> BILD</a></li><li><a href="./techniques/dissociation.html"><strong>2.2.</strong> Dissociation</a></li></ul></li></ul>
-        </div>
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li class="affix"><a href="introduction.html">Introduction</a></li><li><a href="techniques/index.html"><strong aria-hidden="true">1.</strong> Techniques</a></li><li><ol class="section"><li><a href="techniques/dream-recall/index.html"><strong aria-hidden="true">1.1.</strong> Dream Recall</a></li><li><ol class="section"><li><a href="techniques/dream-recall/dream-journals.html"><strong aria-hidden="true">1.1.1.</strong> Dream Journals</a></li></ol></li><li><a href="techniques/lucidity/index.html"><strong aria-hidden="true">1.2.</strong> Lucidity</a></li><li><ol class="section"><li><a href="techniques/lucidity/what-is-lucid-dreaming.html"><strong aria-hidden="true">1.2.1.</strong> What is Lucid Dreaming</a></li><li><a href="techniques/lucidity/dream-initiated/index.html"><strong aria-hidden="true">1.2.2.</strong> Dream Initiated</a></li><li><ol class="section"><li><a href="techniques/lucidity/dream-initiated/reality-checks.html"><strong aria-hidden="true">1.2.2.1.</strong> Reality Checks</a></li><li><a href="techniques/lucidity/dream-initiated/mild.html"><strong aria-hidden="true">1.2.2.2.</strong> MILD</a></li><li><a href="techniques/lucidity/dream-initiated/barriers.html"><strong aria-hidden="true">1.2.2.3.</strong> Barriers</a></li></ol></li><li><a href="techniques/lucidity/wake-initiated/index.html"><strong aria-hidden="true">1.2.3.</strong> Wake Initiated</a></li><li><ol class="section"><li><a href="techniques/lucidity/wake-initiated/dissociation.html"><strong aria-hidden="true">1.2.3.1.</strong> Dissociation</a></li></ol></li><li><a href="techniques/lucidity/wake-up-back-to-bed.html"><strong aria-hidden="true">1.2.4.</strong> What is Lucid Dreaming</a></li></ol></li></ol></li><li><a href="practice-guides/index.html"><strong aria-hidden="true">2.</strong> Practice Guides</a></li><li><ol class="section"><li><a href="practice-guides/lucid-dreaming-basics.html"><strong aria-hidden="true">2.1.</strong> Lucid Dreaming Basics</a></li></ol></li></ol>
+        </nav>
 
         <div id="page-wrapper" class="page-wrapper">
 
-            <div class="page" tabindex="-1">
+            <div class="page">
+                
                 <div id="menu-bar" class="menu-bar">
-                    <div class="left-buttons">
-                        <i id="sidebar-toggle" class="fa fa-bars"></i>
-                        <i id="theme-toggle" class="fa fa-paint-brush"></i>
-                    </div>
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="submenu">
+                                <li><button class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li><button class="theme" id="rust">Rust</button></li>
+                                <li><button class="theme" id="coal">Coal</button></li>
+                                <li><button class="theme" id="navy">Navy</button></li>
+                                <li><button class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                        </div>
 
-                    <h1 class="menu-title">LucidBook</h1>
+                        <h1 class="menu-title"></h1>
 
-                    <div class="right-buttons">
-                        <a href="print.html">
-                            <i id="print-button" class="fa fa-print" title="Print this book"></i>
-                        </a>
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
 
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
                 <div id="content" class="content">
-                    <a class="header" href="print.html#introduction" id="introduction"><h1>Introduction</h1></a>
-<p>Welcome (potential) lucid dreamer!</p>
+                    <main>
+                        <a class="header" href="print.html#introduction" id="introduction"><h1>Introduction</h1></a>
+<p>Welcome (potential) lucid dreamer, meditator, or otherwise!</p>
 <ul>
-<li>If you’re new to lucid dreaming or don’t know what it is, start with the chapter “The Basics”.</li>
-<li>If you want to contribute to this book, see the “Contributing” section below
+<li>If you're interested in lucid dreaming, but don't know what it is or how to do
+it, look at the practice guides chapters. &quot;Lucid Dreaming Basics&quot; is a good
+place to start.</li>
+<li>If you want to contribute to this book, see the &quot;Contributing&quot; section below
 on how to do that.</li>
 </ul>
 <p><em>This book is a heavy work in progress. Feel free to add new guides haphazardly
-if you feel the book needs the subject and doesn’t have it yet, other
+if you feel the book needs the subject and doesn't have it yet, other
 contributors will clean them up and organize them.</em></p>
 <a class="header" href="print.html#what-you-will-find-in-this-book" id="what-you-will-find-in-this-book"><h2>What you will find in this book</h2></a>
 <ul>
-<li>How to lucid dream and how to do various things while lucid dreaming.</li>
+<li>Guides on lucid dreaming and related topics.</li>
 <li>Structured guides on various lucid dreaming techniques.</li>
 </ul>
 <a class="header" href="print.html#what-you-will-not-find-in-this-book" id="what-you-will-not-find-in-this-book"><h2>What you will <em>not</em> find in this book</h2></a>
 <ul>
-<li>Paranormal guides or articles.</li>
-<li>Devices, supplements or other paid books.</li>
+<li>A metaphysical focus. Metaphysical articles and guides are allowed but should
+be kept separated from the other articles. Different people have different
+believes, and this book should be open to all believes.</li>
+<li>Devices, supplements or other paid books. No advertising.</li>
 </ul>
 <a class="header" href="print.html#useful-links" id="useful-links"><h2>Useful Links</h2></a>
 <ul>
@@ -116,21 +152,21 @@ contributors will clean them up and organize them.</em></p>
 </ul>
 <a class="header" href="print.html#contributing" id="contributing"><h2>Contributing</h2></a>
 <p>You can submit contributions to this book at the <a href="https://github.com/lucidbook/book">GitHub repository</a> for it.
-There’s various ways you can contribute new chapters.</p>
+There's various ways you can contribute new chapters.</p>
 <p>This book is created using <a href="https://github.com/azerupi/mdBook">mdBook</a>, and is
-written in the “Markdown” format.
-If you’re familiar with Reddit’s comment and post formatting you’ll feel right
+written in the &quot;Markdown&quot; format.
+If you're familiar with Reddit's comment and post formatting you'll feel right
 at home.</p>
-<p>Don’t forget to read the style guide in the repository’s README.md before
+<p>Don't forget to read the style guide in the repository's README.md before
 writing.</p>
 <a class="header" href="print.html#submit-an-issue" id="submit-an-issue"><h3>Submit an Issue</h3></a>
-<p>Just create an issue with the title “New Chapter: [Title]”, starting with the
+<p>Just create an issue with the title &quot;New Chapter: [Title]&quot;, starting with the
 chapter you want it to be added to, followed by the text you want in it. A
 contributor will add it for you. This is the easiest but least flexible way to
 contribute.</p>
 <p>The Markdown syntax used on GitHub mostly matches the syntax used by mdBook.</p>
 <a class="header" href="print.html#create-a-pull-request" id="create-a-pull-request"><h3>Create a Pull Request</h3></a>
-<p>Contributions can be done using “Pull Requests”, see the <a href="https://help.github.com/articles/about-pull-requests/">GitHub documentation on pull requests</a>
+<p>Contributions can be done using &quot;Pull Requests&quot;, see the <a href="https://help.github.com/articles/about-pull-requests/">GitHub documentation on pull requests</a>
 on how to contribute.</p>
 <p>You can use the GitHub site for adding and editing files, it has a pretty good
 markdown preview. You can also use your own Git client to download the files and
@@ -138,216 +174,150 @@ edit them on your own computer. (For example, GitKraken, SourceTree, or GitHub
 for Windows)</p>
 <a class="header" href="print.html#license" id="license"><h2>License</h2></a>
 <p><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.</p>
-<a class="header" href="print.html#the-basics" id="the-basics"><h1>The Basics</h1></a>
-<p>So you’re interested in lucid dreaming, great!
-Welcome to the start of your journey into entirely different worlds.</p>
-<p>This guide will explain the basics of lucid dreaming, basic terminology, and how
-to get yourself started with the most basic of lucid dreaming techniques,
-“reality checks”.
-From there it will guide you into what to try next in your lucid dreams, the
-basics of dream control, and what other lucid dreaming techniques to try.
-This guide is ordered in sequence of what information will be most relevant to
-you at your level of understanding after reading the previous chapter, but it
-can be read in any order you want.</p>
-<p>Remember to relax and stay persistent, this might take a while.
-Enjoy the ride, even if you <em>really</em> want to reach the destination!</p>
-<a class="header" href="print.html#wait-what-is-lucid-dreaming" id="wait-what-is-lucid-dreaming"><h2>Wait, what is lucid dreaming?</h2></a>
-<p>Lucid dreaming as its very basic form is being aware that you’re dreaming.
-This is also called being “lucid”.
-If this sounds completely normal to you, you may be someone who naturally lucid
-dreams.
-Most people don’t naturally do this however, and have to train themselves to
-become lucid in dreams.
-The term is also used as an umbrella term for actually making use of this
-lucidity.
-Being lucid gives you a lot of power over the dream world itself, you can do
-anything you want in a dream.</p>
-<p>If you’ve never heard of this before, this may sound like a concept completely
-foreign to you, or even like pseudoscience paranormal gobbledygook.
-Lucid dreaming however is widely acknowledged as a real thing, even in
-psychology.
-Everyone can learn to lucid dream and there’s nothing paranormal about it.
-While for some people it can be a jumping board into paranormal experiences,
-this book will not go into that or comment on the validity of it.
-If you’re interested in these things that’s alright, you do you, this book just
-won’t help you with that beyond lucid dreaming itself.</p>
-<a class="header" href="print.html#but-its-a-dream-wont-it-all-feel-fake" id="but-its-a-dream-wont-it-all-feel-fake"><h2>But it’s a dream, won’t it all feel fake?</h2></a>
-<p>It’s technically all imagined yes, but that doesn’t mean it’s not real to your
-mind.
-Lucid dreams can feel incredibly real, or even hyper-real as your senses in
-dreams are not filtered interpretations of your real life sensory organs, but
-direct feeds from the dream world.
-People who wear glasses generally don’t need them in dreams.</p>
-<p>This is not to say that dreams are indistinguishable from real life, in fact
-there’s a lot of things that are very different.
-These are just part of the experience, and allow you to change the world around
-you, your own appearance, travel to different locations quickly, or do various
-other interesting things you can’t do in real life.
-Opening a door in a dream for example might lead nowhere, or somewhere
-completely unexpected.</p>
-<a class="header" href="print.html#but-i-dont-have-any-dreams" id="but-i-dont-have-any-dreams"><h2>But I don’t have any dreams</h2></a>
-<p>Yes you do! Everyone has dreams, the hard part is remembering them.
-But you can train this!
-This guide has some tips and tricks on how to improve your dream recall from
-nothing, to multiple dreams per day.</p>
-<a class="header" href="print.html#but-wont-this-make-me-really-tired" id="but-wont-this-make-me-really-tired"><h2>But won’t this make me really tired?</h2></a>
-<p>Nope!
-Dreaming happens during REM sleep, which isn’t meant to give you rest.
-You can spend every single dream completely lucid and not miss out on any rest
-at all.
-As well while lucid dreaming you may become more aware of how sleep works and
-how to better plan in your sleep to be more rested overall.</p>
-<a class="header" href="print.html#i-need-this-right-now-whats-the-fastest-way-to-do-this" id="i-need-this-right-now-whats-the-fastest-way-to-do-this"><h2>I need this <strong>RIGHT NOW</strong> what’s the fastest way to do this?</h2></a>
-<p>Woah there, calm yourself down a bit.
-Lucid dreaming certainly is very appealing, and a great experience, but rushing
-to it won’t work.
-There is no fastest way or quick easy way to reach a lucid dream, it takes time
-and persistence, and figuring out what works for you.
-(No matter how much some supplement sellers would like to convince you otherwise)</p>
-<p>If you’re not feeling comfortable in your own body, or are suffering from
-problems in your life, you may feel like you absolutely <em>need</em> to learn this.
-This however will work against you.
-Take a step back, figure out your life, talk to a therapist.
-Escaping into a lucid dream won’t solve any problems for you, no matter how much
-it sounds like a panacea.</p>
-<p>You need to approach lucid dreaming with patience.
-It’s likely that it’s going to take some time before you get into a lucid dream
-where you can actually do the things you want to do.
-Enjoy the journey.
-Enjoy the benefits you get from all the techniques that help you achieve lucid
-dreams.
-Enjoy the weird experiences you get that aren’t lucid dreams but still something
-different, something unique.</p>
-<p>Take your time, enjoy the small victories and benefits, and before you know it
-you’re suddenly standing in your own personal world, able to do whatever you
-want.</p>
-<a class="header" href="print.html#okay-how-do-i-start" id="okay-how-do-i-start"><h2>Okay, how do I start?</h2></a>
-<p>Great!
-Welcome to the start of your journey.
-Remember that this is neither a sprint nor a marathon.
-It’s a gentle walk in the park, and if you push yourself to run way too fast you
-might just burn yourself out.
-Move on to the next chapter of the guide.</p>
+<a class="header" href="print.html#techniques" id="techniques"><h1>Techniques</h1></a>
+<p>This is a collection of guides for various techniques for inducing and improving
+lucid dreams.</p>
 <a class="header" href="print.html#dream-recall" id="dream-recall"><h1>Dream Recall</h1></a>
-<p>So you’ve decided to learn lucid dreaming, where do you start?
-Well, let’s start with a very common problem many people run in to, remembering
-your dreams.
-I mean, what’s the point in having a lucid dream if you don’t remember it?
-And you’re also missing out on remembering tons of great adventures you’re
-having every night!
-There’s various methods for remembering dreams, in this chapter we’ll only be
-going over the most common and reliable ones.</p>
-<a class="header" href="print.html#dream-journals" id="dream-journals"><h2>Dream Journals</h2></a>
+<a class="header" href="print.html#dream-journals" id="dream-journals"><h1>Dream Journals</h1></a>
 <p>The staple of every lucid dreaming diet!
-Dream journals are by far the most reliable technique for drastically improving
-your recall.
+Dream journals are a very reliable technique for drastically improving your
+recall.
 Even if you barely ever remember your dreams this will help you a lot.</p>
 <p>The easiest moment to remember your dreams is in the morning right after waking
 up.
 When you wake up, the first thing you should do is stay in bed, and try your
 best possible to remember the dream you just had.
-Spend some time on this, it’s alright if it takes a while, and it’s alright if
-you can’t manage to remember it.</p>
+Spend some time on this, it's alright if it takes a while, and it's alright if
+you can't manage to remember it.</p>
 <p>Now if you remembered a dream, write it down somewhere.
 Write as many details as you can remember.
-The more details you write, the more you’ll be able to remember this dream in
-the future, and the more you’ll remember of dreams after this.
-As you’re writing, you might be remembering even more, so keep writing all of
+The more details you write, the more you'll be able to remember this dream in
+the future, and the more you'll remember of dreams after this.
+As you're writing, you might be remembering even more, so keep writing all of
 that down.
-If you can’t remember anything, just write down “No dream recalled”.
+If you can't remember anything, just write down &quot;No dream recalled&quot;.
 Just make sure you write something every single day, this will keep your journal
 as being important in your mind.</p>
 <p>Doing this will signal to your mind that dream recall is important to you.
-Over time you’ll find it easier and easier to remember dreams.
-Most people leave it just at this technique but if you want to do some more...</p>
-<a class="header" href="print.html#recall-your-day" id="recall-your-day"><h2>Recall Your Day</h2></a>
-<p>Right before sleeping or doing whatever technique you’re planning to do for
-lucid dreaming, think back to your day.
-Try to remember it from start to finish.
-This will prime your mind for better recall during the night.</p>
-<a class="header" href="print.html#its-not-working" id="its-not-working"><h2>It’s not working!</h2></a>
-<p>Sometimes, you’ll just get a while where you’ll have no recall whatsoever.
-This happens even to the most experienced lucid dreamers now and then.
-Just keep journaling, even if you can’t remember anything, and eventually your
-recall will come back.</p>
+Over time you'll find it easier and easier to remember dreams.</p>
+<a class="header" href="print.html#lucidity" id="lucidity"><h1>Lucidity</h1></a>
+<a class="header" href="print.html#what-is-lucid-dreaming" id="what-is-lucid-dreaming"><h1>What is lucid dreaming?</h1></a>
+<p>Lucid dreaming as its very basic form is being aware that you're dreaming.
+This is also called being &quot;lucid&quot;.
+If this sounds completely normal to you, you may be someone who naturally lucid
+dreams.
+Most people don't naturally do this however, and have to train themselves to
+become lucid in dreams.
+The term is also used as an umbrella term for actually making use of this
+lucidity.
+Being lucid gives you a lot of power over the dream world itself, you can do
+anything you want in a dream.</p>
+<p>If you've never heard of this before, this may sound like a concept completely
+foreign to you, or even like pseudoscience paranormal gobbledygook.
+Lucid dreaming however is widely acknowledged as a real thing, even in
+psychology.
+Everyone can learn to lucid dream and there's nothing paranormal about it.
+While for some people it can be a jumping board into paranormal experiences,
+this book will not go into that or comment on the validity of it.
+If you're interested in these things that's alright, you do you, this book just
+won't help you with that beyond lucid dreaming itself.</p>
+<a class="header" href="print.html#but-its-a-dream-wont-it-all-feel-fake" id="but-its-a-dream-wont-it-all-feel-fake"><h2>But it's a dream, won't it all feel fake?</h2></a>
+<p>It's technically all imagined yes, but that doesn't mean it's not real to your
+mind.
+Lucid dreams can feel incredibly real, or even hyper-real as your senses in
+dreams are not filtered interpretations of your real life sensory organs, but
+direct feeds from the dream world.
+People who wear glasses generally don't need them in dreams.</p>
+<p>This is not to say that dreams are indistinguishable from real life, in fact
+there's a lot of things that are very different.
+These are just part of the experience, and allow you to change the world around
+you, your own appearance, travel to different locations quickly, or do various
+other interesting things you can't do in real life.
+Opening a door in a dream for example might lead nowhere, or somewhere
+completely unexpected.</p>
+<a class="header" href="print.html#but-i-barely-ever-have-dreams" id="but-i-barely-ever-have-dreams"><h2>But I barely ever have dreams</h2></a>
+<p>Yes you do! Everyone has dreams every night, the hard part is remembering them.
+But you can train this!</p>
+<a class="header" href="print.html#but-wont-this-make-me-really-tired" id="but-wont-this-make-me-really-tired"><h2>But won't this make me really tired?</h2></a>
+<p>Nope!
+Dreaming happens during REM sleep, which isn't meant to give you rest.
+You can spend every single dream completely lucid and not miss out on any rest
+at all.
+As well while lucid dreaming you may become more aware of how sleep works and
+how to better plan in your sleep to be more rested overall.</p>
+<a class="header" href="print.html#dream-initiated" id="dream-initiated"><h1>Dream Initiated</h1></a>
 <a class="header" href="print.html#reality-checks" id="reality-checks"><h1>Reality Checks</h1></a>
-<p>So you want to lucid dream, and now you know how to actually remember your
-dreams, so what’s next?
-You want to be able to know when you’re dreaming.
-So, how do you know you’re in a dream?
+<p>So, how do you know you're in a dream?
 Easy, you check if you are!</p>
 <p>Reality checks are the bread and butter of lucid dreaming.
-They’re the foundation most other techniques are based on.
-The concept is simple, when you’re not sure if you’re dreaming or not, you
+The concept is simple, when you're not sure if you're dreaming or not, you
 check!
-You might have however seen a problem with this, you don’t just naturally tend
-to ask yourself if you’re dreaming while in a dream.
-We’ll get back to this in a bit but first...</p>
+You might have however seen a problem with this, you don't just naturally tend
+to ask yourself if you're dreaming while in a dream.
+We'll get back to this in a bit but first...</p>
 <a class="header" href="print.html#so-how-exactly-do-i-do-a-reality-check" id="so-how-exactly-do-i-do-a-reality-check"><h2>So how exactly do I do a reality check?</h2></a>
 <p>A reality check is really simple.
-It’s just a few steps.</p>
+It's just a few steps.</p>
 <ul>
-<li>Ask yourself “Am I dreaming?”.
-Don’t ask it for the sake of it.
+<li>Ask yourself &quot;Am I dreaming?&quot;.
+Don't ask it for the sake of it.
 You should <strong>really</strong> be doubting your reality.
 Even if you did a check just before, you always might be in a dream.</li>
 <li>Look around you, does anything look weird. If so, inspect it.</li>
-<li>Ask yourself “How did I get here”, what did you do 5 minutes ago, how did you
+<li>Ask yourself &quot;How did I get here&quot;, what did you do 5 minutes ago, how did you
 get to the location you currently are?
 Time often works differently in dreams, see if you can recognize a time
-skip, or if you can’t remember how you got there.</li>
+skip, or if you can't remember how you got there.</li>
 <li>Perform the reality check itself, here you perform an action that should tell
-you for sure that you’re dreaming.
-In this example we’re using the classic “Look at your hands” check.
+you for sure that you're dreaming.
+In this example we're using the classic &quot;Look at your hands&quot; check.
 <ul>
 <li>Look at your palms</li>
 <li>Check if they look as they normally do, how many fingers do you have,
-don’t yet assume what the correct amount should be.</li>
+don't yet assume what the correct amount should be.</li>
 </ul>
 </li>
-<li>Say to yourself “Next time I am dreaming, I will reality check and realize
-I’m dreaming.”.
+<li>Say to yourself &quot;Next time I am dreaming, I will reality check and realize
+I'm dreaming.&quot;.
 This will incubate the idea of doing reality checks in your mind and help
 bring that into your dreams.</li>
 <li>Re-try your reality check a few times and keep saying that to yourself every
 time.</li>
 </ul>
-<p>When you go to sleep, you should also repeat “Next time I am dreaming, I will
-reality check and realize I’m dreaming.” to yourself as you’re falling asleep.
-The reality check example given is a classic and simple one, but there’s various
+<p>When you go to sleep, you should also repeat &quot;Next time I am dreaming, I will
+reality check and realize I'm dreaming.&quot; to yourself as you're falling asleep.
+The reality check example given is a classic and simple one, but there's various
 others you can do.</p>
 <ul>
 <li>Keeping your nose plugged/blocked and trying to breathe.</li>
 <li>Trying to push your thumb through your palm.</li>
-<li>Paying attention to gravity, see if it’s harder or easier to walk than it
+<li>Paying attention to gravity, see if it's harder or easier to walk than it
 should be.</li>
 <li>Try to change something in your potential dream.</li>
-<li>Try light switches, they don’t always work right in dreams.</li>
-<li>Read some text, see if it’s hard to read or doesn’t make any sense.
+<li>Try light switches, they don't always work right in dreams.</li>
+<li>Read some text, see if it's hard to read or doesn't make any sense.
 Look away and back and again and see if it changed.</li>
 </ul>
-<p>In total doing a check shouldn’t take you too long and it won’t be interrupting
+<p>In total doing a check shouldn't take you too long and it won't be interrupting
 to your overall day.
 You can do as many checks as you want and combine different ones, be creative!</p>
 <a class="header" href="print.html#okay-but-how-do-i-remember-to-do-this-in-dreams" id="okay-but-how-do-i-remember-to-do-this-in-dreams"><h2>Okay, but how do I remember to do this in dreams?</h2></a>
 <p>Well, one thing that will help is the mantra above, repeating to yourself that
 you will be doing a check.
-But there’s one important key thing to keep in mind when you start lucid
+But there's one important key thing to keep in mind when you start lucid
 dreaming.</p>
-<p><strong>You should never be sure you’re not dreaming, always assume you might be no
+<p><strong>You should never be sure you're not dreaming, always assume you might be no
 matter what.
-A reality check can’t prove that you are in reality, it can only prove that
-you’re not.
-You should be living this, this should be on your mind all the time, that the
-world you’re in might not be real.</strong></p>
-<p>This is so incredibly key I can’t make it bold enough text.
+A reality check can't prove that you are in reality, it can only prove that
+you're not.</strong></p>
+<p>This is so incredibly key I can't make it bold enough text.
 You should <strong>always</strong> assume you might be dreaming, it is <strong>always</strong> a
 possibility.
-Living with this doubt may sound scary, but it isn’t!
-Doubting your surroundings at all times makes you more aware of what’s happening
-around you, and doesn’t take away from the experiences you have while awake.
+Living with this doubt may sound scary, but it isn't!
+Doubting your surroundings at all times makes you more aware of what's happening
+around you, and doesn't take away from the experiences you have while awake.
 Having this constant doubt about being awake is the first step to realizing that
-you’re dreaming in a dream, but again we’ll get back to that in a bit.</p>
+you're dreaming in a dream, but again we'll get back to that in a bit.</p>
 <p>Before we move on I should make a quick mention, if you doubting your reality
 starts impacting your life in serious negative ways, you need to take a step
 back and re-evaluate if this is the right path for you.
@@ -358,11 +328,11 @@ therapist.
 Prioritize your mental wellbeing over lucid dreaming.</p>
 <a class="header" href="print.html#right-anything-else-i-can-do-to-remember-this" id="right-anything-else-i-can-do-to-remember-this"><h2>Right, anything else I can do to remember this?</h2></a>
 <p>Sure!
-A few more detailed tricks will be mentioned later in this guide but here’s a
+A few more detailed tricks will be mentioned later in this guide but here's a
 few simple tricks you can make use of.</p>
 <ul>
-<li>Read back your dream journal (we’ll get to what that is later), and see if you
-have any recurring dream signs that should help you recognize it’s a dream.</li>
+<li>Read back your dream journal (we'll get to what that is later), and see if you
+have any recurring dream signs that should help you recognize it's a dream.</li>
 <li>Perform a reality check whenever something common occurs that also happens in
 your dreams.</li>
 <li>Perform a reality check whenever you go through a door.</li>
@@ -373,88 +343,53 @@ You can also meditate to incubate these triggers into your dreams. (More on
 meditation and incubation later in this guide)</p>
 <a class="header" href="print.html#if-i-do-all-of-this-will-i-get-a-lucid-dream" id="if-i-do-all-of-this-will-i-get-a-lucid-dream"><h2>If I do all of this, will I get a lucid dream?</h2></a>
 <p>Yes! Eventually.
-It’s going to take time, takes a different amount for everyone.
+It's going to take time, takes a different amount for everyone.
 Some take a few days, others a few months.
 The key is persistence and staying positive.
 Say to yourself every night before sleeping that you <strong>will</strong> have a lucid
 dream.
-Really believe it, even if you’ve been going for weeks without success.</p>
-<p>This technique is called “DILD” for Dream-Initiated Lucid Dream.
-Up next in this guide you’ll read about another technique called “MILD” that
+Really believe it, even if you've been going for weeks without success.</p>
+<p>This technique is called &quot;DILD&quot; for Dream-Initiated Lucid Dream.
+Up next in this guide you'll read about another technique called &quot;MILD&quot; that
 will make it easier to become lucid as well.
 Both of these techniques benefit from persistence and time, it will become
 easier over time to become lucid.</p>
-<p>Eventually, you’ll get a successes.
-You’ll start being more aware in dreams, thinking more critically.
+<p>Eventually, you'll get a successes.
+You'll start being more aware in dreams, thinking more critically.
 You start noticing things are weird, but perhaps not quite realizing yet.
-And one day, you’ll suddenly be standing there, looking at your hands having 6
+And one day, you'll suddenly be standing there, looking at your hands having 6
 fingers.</p>
-<a class="header" href="print.html#holy-crap-my-hands-have-6-fingers" id="holy-crap-my-hands-have-6-fingers"><h2>HOLY CRAP MY HANDS HAVE 6 FINGERS</h2></a>
-<p>So you’ve suddenly realized you’re in a lucid dream, what next?
-You’ll likely be very excited, the world around you may suddenly become a lot
-more vivid.
-Some however, then might wake up.</p>
-<p>A common theory is that the excitement is what wakes you up, but this doesn’t
-seem to line up with the experiences of regular lucid dreamers.
-Rather, it seems that this theory has come from that beginner lucid dreamers
-are all the more excited when they get their first lucid dream.
-Rather, it’s just more likely to become lucid at the end of the dream, while
-you’re already about to wake up.
-As a result when you’re starting it’s likely that this is where you realize it’s
-a dream.</p>
-<p>If this happens to you (it may not), don’t worry about it!
-You just managed to get another step closer to your goals and whatever you’re
-doing is working!
-Just keep going, eventually you’ll get longer lucid dreams!</p>
-<p>What also may happen is that you don’t remember all (or any of) the things you
-wanted to do when lucid dreaming.
-This is normal as well, and it can really suck, but once again remember that
-this is still a success!
-You’ve managed to stick in the dream, that’s great!
-Eventually you’ll get more aware of what you’re doing.
-What also will help is using incubation to set a goal of what you’ll be doing in
-the lucid dream.
-More on that later in this guide.</p>
-<p>Regardless of what happened, if you made it to this step you’ve done great!
-You’ve set the first steps into your lucid dreaming adventure.
-If you haven’t yet, that’s alright.
-Just keep trying, and keep reading!
-The rest of this guide will have a common lucid dreaming method that’s really
-easy to make use of and very effective, some more tips to make it easier to
-lucid dream, and tips to help you in the dreams when you become lucid.</p>
 <a class="header" href="print.html#further-reading" id="further-reading"><h2>Further Reading</h2></a>
 <p>An extra technique you could make use of to remember your reality checks is
-called “Prospective Memory”, there’s no guide on this currently in this book.
+called &quot;Prospective Memory&quot;, there's no guide on this currently in this book.
 Instead you could read <a href="http://www.dreamviews.com/attaining-lucidity/151321-prospective-memory-lucid-dreaming-4-a.html">this one</a>.</p>
 <a class="header" href="print.html#mild---mnemonically-induced-lucid-dream" id="mild---mnemonically-induced-lucid-dream"><h1>MILD - Mnemonically Induced Lucid Dream</h1></a>
-<p>Now that you’ve learned about the very basics of lucid dreaming, it’s time to
-move on to one of the techniques that make it easier to become lucid.
-The MILD technique is very beginner-friendly, and has been very effective
+<p>The MILD technique is very beginner-friendly, and has been very effective
 overall, regardless of experience.</p>
 <p>MILD works by teaching your mind what should be happening in a dream, and
 affirming to yourself that you <em>will</em> lucid dream.
-This way you’re training your mind to lucid dream without actually having to
+This way you're training your mind to lucid dream without actually having to
 be in a lucid dream yet to do it.</p>
-<p>With this technique it’s important to do it <em>every day</em>.
+<p>With this technique it's important to do it <em>every day</em>.
 Persistence and consistency are the key to successful MILD.
-If you wake up in the morning after having done MILD and haven’t gotten a lucid
-dream, it just means you’ve worked further towards one.
-Every night trains your mind a bit more and eventually you’ll start to see
+If you wake up in the morning after having done MILD and haven't gotten a lucid
+dream, it just means you've worked further towards one.
+Every night trains your mind a bit more and eventually you'll start to see
 results.</p>
 <a class="header" href="print.html#so-how-does-it-work" id="so-how-does-it-work"><h2>So how does it work?</h2></a>
 <p>Every evening, put some time apart right before sleep to do MILD.
 You need at least 5 minutes, but for better results do roughly 10 to 20 minutes.
 Before you start, put your worries and thoughts about the next day away and
 clear your mind.
-Perhaps write them in your dream journal if you’re worried about forgetting
+Perhaps write them in your dream journal if you're worried about forgetting
 something.
-You’re about to get some sleep, so you can’t really do much with those worries
+You're about to get some sleep, so you can't really do much with those worries
 anyways, set them to the side and relax.</p>
 <p>If you fall asleep easily (within 10 minutes), you should start MILD sitting
 comfortably on your bed for roughly 5 minutes before laying down.
 You should be keeping your focus on MILD for at least 5 minutes, so if you fall
 asleep easily, laying down will make this harder for you.
-If you’re not someone who falls asleep within 10 minutes, just lay down from the
+If you're not someone who falls asleep within 10 minutes, just lay down from the
 start.
 After those 5 minutes are over you should continue, but make less of an effort
 to keep focus.
@@ -466,30 +401,30 @@ Imagine becoming and staying lucid.
 Imagine exploring the dream, and what you would do when lucid.
 Imagine completing the goals you have for lucid dreaming.
 Believe that in a few minutes, this is exactly what will happen to you.
-Mix it up a bit what you’re imagining every night, use different dreams, or
+Mix it up a bit what you're imagining every night, use different dreams, or
 entirely invent a dream of your own.</p>
 <p>When the 5 minutes are over, try to continue, but let your mind drift.
-At this point you’re trying to fall asleep.
-By the time you fall asleep you’ll have ingrained the idea of lucid dreaming
+At this point you're trying to fall asleep.
+By the time you fall asleep you'll have ingrained the idea of lucid dreaming
 further into your mind.
-If you’re someone who wakes up naturally during the night, or because of an
+If you're someone who wakes up naturally during the night, or because of an
 alarm for another technique, you can also do MILD the next time you fall asleep.
 It will help, but all you need to keep improving is doing it once every night.</p>
 <a class="header" href="print.html#mantra" id="mantra"><h2>Mantra</h2></a>
 <p>You can also boost your MILD successfulness by adding a mantra to it, or after
-it when you’re trying to fall asleep.
+it when you're trying to fall asleep.
 A mantra is simply something you repeat to yourself in your mind.
 Some good mantras are...</p>
 <ul>
-<li>I’m dreaming</li>
+<li>I'm dreaming</li>
 <li>This is dream</li>
 <li>I will wake up in a dream</li>
-<li>I’ll be dreaming soon</li>
+<li>I'll be dreaming soon</li>
 <li>I will have lucid dreams tonight</li>
 </ul>
 <p>A thing to keep in mind with mantras is that the mind ignores negation in
-mantras. Avoid words like “not”. “I will <em>not</em> fail to have a lucid dream” will
-become “I will fail to have a lucid dream” to your mind.</p>
+mantras. Avoid words like &quot;not&quot;. &quot;I will <em>not</em> fail to have a lucid dream&quot; will
+become &quot;I will fail to have a lucid dream&quot; to your mind.</p>
 <a class="header" href="print.html#combining-with-other-techniques" id="combining-with-other-techniques"><h2>Combining With Other Techniques</h2></a>
 <p>MILD by itself is very effective, but it also benefits from combining it with
 other techniques.
@@ -497,120 +432,233 @@ All-Day-Awareness, Reality Checking, and Wakeup-Back-To-Bed all give you an
 added bonus in effectiveness and can be easily combined with MILD.</p>
 <a class="header" href="print.html#references" id="references"><h2>References</h2></a>
 <ul>
-<li><a href="http://www.dreamviews.com/attaining-lucidity/119050-naiyas-simple-mild-technique.html">Naiya’s Simple MILD Technique Guide</a></li>
+<li><a href="http://www.dreamviews.com/attaining-lucidity/119050-naiyas-simple-mild-technique.html">Naiya's Simple MILD Technique Guide</a></li>
 </ul>
-<a class="header" href="print.html#whats-next" id="whats-next"><h1>What’s Next?</h1></a>
-<p>At this point, you’ve reached the end of the basics guide.
-Congratulations!
-You can freely explore the rest of the book as you want, and read guides that
-interest you.
-You can also look over the links on the introduction page and read guides on
-other sites.</p>
-<p>Remember once again, lucid dreaming is going to take a while for you to get used
-to it and get a first lucid dream.
-Unlike what some guides like to claim, you can’t do this overnight.
-Remember to relax and enjoy the process, you’ll get a lucid dream eventually!</p>
-<p>Have fun, Good Night, and Good Luck!</p>
-<a class="header" href="print.html#techniques" id="techniques"><h1>Techniques</h1></a>
-<p>This is a collection of guides for various techniques for inducing and improving
-lucid dreams.</p>
-<a class="header" href="print.html#bild---barrier-induced-lucid-dream" id="bild---barrier-induced-lucid-dream"><h1>BILD - Barrier Induced Lucid Dream</h1></a>
-<p><strong>BILD</strong> is a way to get lucid in your dreams via barriers that you set up.</p>
-<p>It can be any kind of barriers at all, the general idea of it is that those barriers will help you become lucid by putting you or even forcing you into a mindset to become lucid.</p>
-<p>Eventually, because of the barriers, you’ll do a reality check, feel or notice that something is wrong, or perhaps even notice the barriers themselves.</p>
-<p>This technique can grant you <strong>omnilucidity</strong> in a very simple and fast manner.</p>
-<a class="header" href="print.html#what-is-omnilucidity" id="what-is-omnilucidity"><h3>What is omnilucidity?</h3></a>
-<p><strong>Omnilucidity</strong> is when you are lucid in every single dream you have.</p>
+<a class="header" href="print.html#barriers" id="barriers"><h1>Barriers</h1></a>
+<p>Barriers is a technique to induce lucid dreams by creating barriers you can only
+pass through if you're lucid.
+This can be any kind of barrier, the technique works by preventing you from
+moving forward until you're lucid, and by triggering lucidity simply with the
+existence of the barrier.
+Eventually, because of the barriers, you'll do a reality check, feel or notice
+that something is wrong, or perhaps even notice the barriers themselves.</p>
 <a class="header" href="print.html#setting-up-a-barrier" id="setting-up-a-barrier"><h2>Setting up a barrier</h2></a>
-<p>In order to set up a barrier, you will first need to have a lucid dream through other means. (DILD, MILD, WILD, ...)</p>
-<p>Once you are in a lucid dream, you’re going to want to go (Preferably) to your bedroom, or to any place of your choice where you’d like to setup a <strong>spawning point</strong>.</p>
+<p>The barriers technique has to be done from inside a lucid dream.
+If you are not capable of lucid dreaming yet, take a look at other techniques
+that don't need to be done from inside a dream.</p>
+<p>Once you are in a lucid dream, you're going to want to go (Preferably) to your
+bedroom, or to any place of your choice where you'd like to setup a <strong>spawning point</strong>.</p>
 <a class="header" href="print.html#a-spawning-point-wha" id="a-spawning-point-wha"><h3>A spawning point? Wha?</h3></a>
 <p>Yes, either your bed or a place of your choice, when setting up the barriers, you will spawn there every dream, it will make sense as you continue reading the guide.</p>
-<p>Now that you have chosen the place where you’d like to spawn, you need to demark the spawning zone in some way, and in this example we’re gonna use “magical auras” to demark the spawning zone.</p>
+<p>Now that you have chosen the place where you'd like to spawn, you need to demark the spawning zone in some way, and in this example we're gonna use &quot;magical auras&quot; to demark the spawning zone.</p>
 <p>Wave your hands around as if you were going to do some magic, like energy manipulation, focus this energy and send it towards your spawn point as it slowly marks the contours of the spawn zone you wish. You should start to see a magical aura go out from your hand, and it will slowly trace the contours of your spawn point.</p>
 <p>At the same time this happens, set up the following rules, either by thinking them, saying them out loud, or maybe even chanting it:</p>
 <ul>
-<li>“From now on, I will spawn in (Your place of choosing) in every single one of my future dreams.”</li>
-<li>“I cannot go through the barriers, so long as I am not lucid.”</li>
-<li>“If I am out of the barriers, I am already lucid.”</li>
+<li>&quot;From now on, I will spawn in (Your place of choosing) in every single one of my future dreams.&quot;</li>
+<li>&quot;I cannot go through the barriers, so long as I am not lucid.&quot;</li>
+<li>&quot;If I am out of the barriers, I am already lucid.&quot;</li>
 </ul>
-<p>That is about it, that’s the general idea on how you should proceed for it, but of course you can get creative and use something else instead of “magical auras” or perhaps even differently worded rules.</p>
-<p>And now your barriers are done! Congrats! But you’re still not quite there just yet...</p>
+<p>That is about it, that's the general idea on how you should proceed for it, but of course you can get creative and use something else instead of &quot;magical auras&quot; or perhaps even differently worded rules.</p>
+<p>And now your barriers are done! Congrats! But you're still not quite there just yet...</p>
 <a class="header" href="print.html#persisting-the-barriers" id="persisting-the-barriers"><h2>Persisting the barriers</h2></a>
-<p>Now that you have setup your barriers, you’ll need to make them persistent, so that it actually carries out to your future dreams.</p>
+<p>Now that you have setup your barriers, you'll need to make them persistent, so that it actually carries out to your future dreams.</p>
 <p>Doing so is fairly simple and may take anywhere from a day to a few days.</p>
-<p>You’ll need to meditate and visualize those barriers you’ve just made. Visualize possible scenarios about it might play out in your next dream.</p>
-<a class="header" href="print.html#heres-an-example" id="heres-an-example"><h3>Here’s an example</h3></a>
-<p>Start your meditation, when you feel like it, start visualizing the beginning of a dream, you’ll start at your spawn zone, still not lucid and unaware that this is a dream.
-However because of the rules you’ve just set, you’ll be stuck in this spawn zone, so you might try to get out or wonder why you cannot get out, <em>and that’s the thing, that is the trigger for lucidity</em>.</p>
-<p>You will extremely likely start to ask yourself legitimate questions about why this is happening, may it be a dream? You will reality check at this point or just know you’re dreaming. Tada!</p>
+<p>You'll need to meditate and visualize those barriers you've just made. Visualize possible scenarios about it might play out in your next dream.</p>
+<a class="header" href="print.html#heres-an-example" id="heres-an-example"><h3>Here's an example</h3></a>
+<p>Start your meditation, when you feel like it, start visualizing the beginning of a dream, you'll start at your spawn zone, still not lucid and unaware that this is a dream.
+However because of the rules you've just set, you'll be stuck in this spawn zone, so you might try to get out or wonder why you cannot get out, <em>and that's the thing, that is the trigger for lucidity</em>.</p>
+<p>You will extremely likely start to ask yourself legitimate questions about why this is happening, may it be a dream? You will reality check at this point or just know you're dreaming. Tada!</p>
 <p>Now you are able to go through the barriers and get out of the spawn point because you are lucid now!</p>
 <a class="header" href="print.html#after-a-day-or-a-few-days-of-meditation-and-visualization" id="after-a-day-or-a-few-days-of-meditation-and-visualization"><h3>After a day or a few days of meditation and visualization...</h3></a>
-<p>That’s it! The barriers have now carried over to your future dreams, and now you will be getting lucid every dream! You’ll spawn at your spawn point, you will be stuck in this spawn point as the barriers do not let you through. You’ll wonder why this happens and suspect this is a dream, thus doing a reality check, and becoming lucid!</p>
+<p>That's it! The barriers have now carried over to your future dreams, and now you will be getting lucid every dream! You'll spawn at your spawn point, you will be stuck in this spawn point as the barriers do not let you through. You'll wonder why this happens and suspect this is a dream, thus doing a reality check, and becoming lucid!</p>
 <a class="header" href="print.html#maintaining-the-barriers" id="maintaining-the-barriers"><h2>Maintaining the barriers</h2></a>
-<p>Alright, it isn’t <em>that</em> easy, you still have to maintain your barriers from time to time because they will slowly fade out eventually, leaving you with normal dreams again.</p>
+<p>Alright, it isn't <em>that</em> easy, you still have to maintain your barriers from time to time because they will slowly fade out eventually, leaving you with normal dreams again.</p>
 <p>Once a week, simply go back to your spawn point and restrengthen your barriers by giving it some more energy, you can give some of your energy just like in the barrier induction part, or you can do something else that makes sense to you, get creative!</p>
 <a class="header" href="print.html#help-my-barriers-are-fading--not-as-effective" id="help-my-barriers-are-fading--not-as-effective"><h3>Help! My barriers are fading / not as effective</h3></a>
 <p>If your barriers start to fade, depending on the severity, you can meditate and visualize it to restrengthen it a little bit, go into a lucid dream, and restrenghten it from there.
-Or if it’s too severe then I’m afraid you’ll have to go back to <a href="print.html#setting-up-a-barrier">setting up a barrier</a>, pay attention next time!</p>
+Or if it's too severe then I'm afraid you'll have to go back to <a href="print.html#setting-up-a-barrier">setting up a barrier</a>, pay attention next time!</p>
+<a class="header" href="print.html#wake-initiated" id="wake-initiated"><h1>Wake Initiated</h1></a>
 <a class="header" href="print.html#dissociation" id="dissociation"><h1>Dissociation</h1></a>
-<p>Dissociation is the practice of “letting go” of your physical body, thoughts &amp; other senses.
+<p>Dissociation is the practice of &quot;letting go&quot; of your physical body, thoughts &amp; other senses.
 Doing so can result in much more relaxed and focused meditation, much better visualization, along with easier dream induction via WILD or similar means.</p>
-<p>You can dissociate pretty much any time you’d like, provided you are in a comfortable position and with minimal or no outside disturbances (Auditory, etc...), it is preferable to keep your eyes closed while dissociating.</p>
-<p>For all of these methods, start by going into a comfortable position (If you’re unsure, just do the corpse position, lie on your back, arms lying down on the sides, no crossing of the legs).
+<p>You can dissociate pretty much any time you'd like, provided you are in a comfortable position and with minimal or no outside disturbances (Auditory, etc...), it is preferable to keep your eyes closed while dissociating.</p>
+<p>For all of these methods, start by going into a comfortable position (If you're unsure, just do the corpse position, lie on your back, arms lying down on the sides, no crossing of the legs).
 Then close your eyes and begin some meditation at first, simply focus on your breathing for a few minutes.</p>
 <a class="header" href="print.html#dissociating-the-physical-body-via-ignoring-it" id="dissociating-the-physical-body-via-ignoring-it"><h2>Dissociating the physical body via ignoring it</h2></a>
 <p>When you feel relaxed, begin to slowly ignore your body in an incremental manner, first your toes, then feet, legs, hands, arms, chest, torso and finally head.
-If you keep focus on your breathing at all times, you’ll find that it becomes much easier to dissociate.</p>
-<p>If on purpose ignoring a certain part of your body doesn’t make sense, that’s alright.
+If you keep focus on your breathing at all times, you'll find that it becomes much easier to dissociate.</p>
+<p>If on purpose ignoring a certain part of your body doesn't make sense, that's alright.
 Not everyone can do that easily.
 Try one of the following two alternatives instead.</p>
 <a class="header" href="print.html#dissociating-the-physical-body-via-amplifying-and-ignoring-it" id="dissociating-the-physical-body-via-amplifying-and-ignoring-it"><h3>Dissociating the physical body via amplifying and ignoring it</h3></a>
-<p>If dissociating through simply ignoring your body doesn’t quite do the trick or takes a long time, you can try this method instead which may provide better results.</p>
-<p>When you feel relaxed, begin to focus on your body (Stay aware of your breathing nonetheless) and “amplify” the feeling of your body, feel absolutely everything of your body, do that for a few minutes.
+<p>If dissociating through simply ignoring your body doesn't quite do the trick or takes a long time, you can try this method instead which may provide better results.</p>
+<p>When you feel relaxed, begin to focus on your body (Stay aware of your breathing nonetheless) and &quot;amplify&quot; the feeling of your body, feel absolutely everything of your body, do that for a few minutes.
 Then just suddenly ignore your body, shift your focus to solely your breathing only and dissociation will carry out very fast.</p>
 <a class="header" href="print.html#dissociating-the-physical-body-via-amplifying-and-creating-a-new-body" id="dissociating-the-physical-body-via-amplifying-and-creating-a-new-body"><h3>Dissociating the physical body via amplifying and creating a new body</h3></a>
-<p>When you feel relaxed, begin to focus on your body (Stay aware of your breathing nonetheless) and “amplify” the feeling of your body, feel absolutely everything of your body, do that for a few minutes.
+<p>When you feel relaxed, begin to focus on your body (Stay aware of your breathing nonetheless) and &quot;amplify&quot; the feeling of your body, feel absolutely everything of your body, do that for a few minutes.
 Then pretend that this body is in fact your new body, a body that is different from the real physical one and continue amplifying it as long as you wish, the more you do it, the more dissociation.</p>
 <p>The most straightforward way to create the feeling of that body being different is to, well, feel it.
-Convince yourself that this new body you’re in isn’t the one you had just a few minutes ago.
+Convince yourself that this new body you're in isn't the one you had just a few minutes ago.
 For possibly more effective dissociation, create the illusion that your new body has more features (e.g different body shape, wings, etc...)</p>
 <a class="header" href="print.html#dissociating-your-thoughts-andor-emotions" id="dissociating-your-thoughts-andor-emotions"><h2>Dissociating your thoughts and/or emotions</h2></a>
 <p>Dissociation from your thoughts is rather easy, this is just simple meditation in the end. Focus on your breathing, keep track whenever your breathe in or out.
-You cannot block thoughts or emotions, but doing so will put them in the background, you acknowledge them, but you let them pass, you don’t get stuck on a specific thought.</p>
+You cannot block thoughts or emotions, but doing so will put them in the background, you acknowledge them, but you let them pass, you don't get stuck on a specific thought.</p>
 <a class="header" href="print.html#dissociating-from-vision" id="dissociating-from-vision"><h2>Dissociating from vision</h2></a>
 <p>Done in conjunction of physical body dissociation, this is possibly the most powerful form of dissociation, it will very quickly lead to very vivid hypnagogia and possibly dreams.</p>
-<p>This is going to sound quite weird, but in a nutshell what you want to do is to “visualize visualization” and you want to keep going down this path as much as you can. So in the end you may “visualize visualizing visualization” and so on...
-Don’t worry too much about what this means or the details, just try to do whatever feels right.</p>
+<p>This is going to sound quite weird, but in a nutshell what you want to do is to &quot;visualize visualization&quot; and you want to keep going down this path as much as you can. So in the end you may &quot;visualize visualizing visualization&quot; and so on...
+Don't worry too much about what this means or the details, just try to do whatever feels right.</p>
 <a class="header" href="print.html#extra-tips" id="extra-tips"><h2>Extra tips</h2></a>
 <p>What you can do for extra focus &amp; relaxedness, you can perform the 4-7-8 breathing technique which is explained by this awesome man!</p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/gz4G31LGyog" frameborder="0" allowfullscreen></iframe>
 <p>It helps you focus, it helps you relax, it helps you sleep faster, it relieves anxiety and you can get quite euphoric from it.</p>
+<a class="header" href="print.html#wake-up-back-to-bed" id="wake-up-back-to-bed"><h1>Wake up, Back to Bed</h1></a>
+<p>This is a simple technique that gives you a significant boost to your lucidity.
+It is also generally considered a requirement for WILD techniques during the
+night, as you want to be close to REM to do WILD.</p>
+<p>To do WBTB, you wake up 4-5 hours after you've gone to sleep.
+Then, you spend a brief amount of time raising your awareness, preferably
+without making yourself more awake overall.
+Go to the bathroom, get a glass of water, or spend a few minutes meditating.</p>
+<p>The duration you're awake depends on what you want to do and what works for you,
+it can be anything from a few seconds to half an hour.</p>
+<a class="header" href="print.html#practice-guides" id="practice-guides"><h1>Practice Guides</h1></a>
+<a class="header" href="print.html#lucid-dreaming-basics" id="lucid-dreaming-basics"><h1>Lucid Dreaming Basics</h1></a>
+<p>So you're interested in lucid dreaming, great!
+Welcome to the start of your journey into entirely different worlds.</p>
+<p>If you don't know what lucid dreaming is, first read the chapter <a href="techniques/lucidity/what-is-lucid-dreaming.html">What is Lucid Dreaming</a>.
+That will give you a good introduction.</p>
+<p>This guide will explain the basics of lucid dreaming, basic terminology, and how
+to get yourself started with the most basic of lucid dreaming techniques,
+&quot;reality checks&quot;.
+From there it will guide you into what to try next in your lucid dreams, the
+basics of dream control, and what other lucid dreaming techniques to try.
+This guide is ordered in sequence of what information will be most relevant to
+you at your level of understanding after reading the previous chapter, but it
+can be read in any order you want.</p>
+<a class="header" href="print.html#i-need-this-right-now-whats-the-fastest-way-to-do-this" id="i-need-this-right-now-whats-the-fastest-way-to-do-this"><h2>I need this <strong>RIGHT NOW</strong> what's the fastest way to do this?</h2></a>
+<p>Woah there, calm yourself down a bit.
+Lucid dreaming certainly is very appealing, and a great experience, but rushing
+to it won't work.
+There is no fastest way or quick easy way to reach a lucid dream, it takes time
+and persistence, and figuring out what works for you.
+(No matter how much some supplement sellers would like to convince you otherwise)</p>
+<p>If you're not feeling comfortable in your own body, or are suffering from
+problems in your life, you may feel like you absolutely <em>need</em> to learn this.
+This however will work against you.
+Take a step back, figure out your life, talk to a therapist.
+Escaping into a lucid dream won't solve any problems for you, no matter how much
+it sounds like a panacea.</p>
+<p>You need to approach lucid dreaming with patience.
+It's likely that it's going to take some time before you get into a lucid dream
+where you can actually do the things you want to do.
+Enjoy the journey.
+Enjoy the benefits you get from all the techniques that help you achieve lucid
+dreams.
+Enjoy the weird experiences you get that aren't lucid dreams but still something
+different, something unique.</p>
+<p>Take your time, enjoy the small victories and benefits, and before you know it
+you're suddenly standing in your own personal world, able to do whatever you
+want.</p>
+<a class="header" href="print.html#how-to-actually-do-this" id="how-to-actually-do-this"><h2>How to actually do this</h2></a>
+<p>To learn to lucid dream you need to work on two fronts, recall and lucidity.
+Both of these have well known techniques you can start out with.</p>
+<p>A key thing to remember here is <strong>persistence</strong>.
+Learning to lucid dream takes time, not just a few days, but likely a few weeks,
+or in some cases months.
+It's important that you stay persistent, any technique is going to work
+eventually.</p>
+<a class="header" href="print.html#recall" id="recall"><h3>Recall</h3></a>
+<p>Starting out with recall, you may not be remembering any dreams at all.
+This is normal as you've not trained your mind yet that dreams are important to
+you and that you want to remember them.</p>
+<p>Starting out, it's good to start keeping a <a href="techniques/dream-recall/dream-journals.html">Dream Journal</a>.
+This is a technique almost every lucid dreamer uses to increase their recall.</p>
+<a class="header" href="print.html#lucidity-1" id="lucidity-1"><h3>Lucidity</h3></a>
+<p>Lucidity is the tricky part.
+A good place to start is the bread and butter of lucid dreaming, <a href="techniques/lucidity/dream-initiated/reality-checks.html">Reality Checks</a>.</p>
+<p>As well it's a good idea to practice <a href="techniques/lucidity/dream-initiated/mild.html">MILD</a>.
+This technique has shown to be very effective, especially for new people in
+comparison to other techniques.</p>
+<p>You will also most likely want to make use of <a href="techniques/lucidity/wake-up-back-to-bed.html">Wake up, Back to Bed</a>
+to boost your lucidity.
+This technique significantly increases your chances of lucid dreaming on the
+night you do it.</p>
+<p>These techniques are a good place to start.
+Remember that persistence is key here, don't fall into the trap of technique
+switching.
+Pick a technique (or two, if you can combine them) and stick with it every
+single day and night.</p>
+<p>You may have heard about Wake-Initiated techniques as well.
+Wake-Initiated techniques have a tendency to be extremely hard to learn, unless
+you already have significant previous meditation experience.
+It is not advised to start there as a beginner.</p>
+<a class="header" href="print.html#i-got-a-lucid-dream-but-i-woke-up-immediately" id="i-got-a-lucid-dream-but-i-woke-up-immediately"><h2>I got a lucid dream but I woke up immediately!</h2></a>
+<p>So you've suddenly realized you're in a lucid dream, what next?
+You'll likely be very excited, the world around you may suddenly become a lot
+more vivid.
+Some however, then might wake up.</p>
+<p>A common theory is that the excitement is what wakes you up, but this doesn't
+seem to line up with the experiences of regular lucid dreamers.
+Rather, it seems that this theory has come from that beginner lucid dreamers
+are all the more excited when they get their first lucid dream.
+Rather, it's just more likely to become lucid at the end of the dream, while
+you're already about to wake up.
+As a result when you're starting it's likely that this is where you realize it's
+a dream.</p>
+<p>If this happens to you (it may not), don't worry about it!
+You just managed to get another step closer to your goals and whatever you're
+doing is working!
+Just keep going, eventually you'll get longer lucid dreams!</p>
+<p>What also may happen is that you don't remember all (or any of) the things you
+wanted to do when lucid dreaming.
+This is normal as well, and it can really suck, but once again remember that
+this is still a success!
+You've managed to stick in the dream, that's great!
+Eventually you'll get more aware of what you're doing.
+What also will help is using incubation to set a goal of what you'll be doing in
+the lucid dream.
+More on that later in this guide.</p>
+<p>Regardless of what happened, if you made it to this step you've done great!
+You've set the first steps into your lucid dreaming adventure.
+If you haven't yet, that's alright.
+Just keep trying, and keep reading!
+The rest of this guide will have a common lucid dreaming method that's really
+easy to make use of and very effective, some more tips to make it easier to
+lucid dream, and tips to help you in the dreams when you become lucid.</p>
 
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
                 </div>
-
-                <!-- Mobile navigation buttons -->
-                
-
-                
-
             </div>
 
-            
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
 
-            
+                
+            </nav>
 
         </div>
 
 
         <!-- Local fallback for Font Awesome -->
         <script>
-            if ($(".fa").css("font-family") !== "FontAwesome") {
-                $('<link rel="stylesheet" type="text/css" href="_FontAwesome/css/font-awesome.css">').prependTo('head');
+            if (getComputedStyle(document.querySelector(".fa")).fontFamily !== "FontAwesome") {
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.type = 'text/css';
+                link.href = '_FontAwesome/css/font-awesome.css';
+                document.head.insertBefore(link, document.head.firstChild)
             }
         </script>
 
-        <!-- Livereload script (if served using the cli tool) -->
         
 
         
@@ -619,7 +667,7 @@ Don’t worry too much about what this means or the details, just try to do what
 
         
         <script>
-            $(document).ready(function() {
+            document.addEventListener('DOMContentLoaded', function() {
                 window.print();
             })
         </script>
@@ -627,5 +675,9 @@ Don’t worry too much about what this means or the details, just try to do what
 
         <script src="highlight.js"></script>
         <script src="book.js"></script>
+
+        <!-- Custom JS script -->
+        
+
     </body>
 </html>
